@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { NavBar } from "../../../components/navbar/navbar";
+import { NavBar } from "@/components/navbar/navbar";
 
 export const metadata: Metadata = {
   title: "Tracker",

@@ -1,3 +1,9 @@
+import { InfoCardsWrapper } from "@/components/info-cards-wrapper.tsx";
+
 export default function Home() {
-  return <main></main>;
+  return (
+    <main>
+      <InfoCardsWrapper />
+    </main>
+  );
 }
