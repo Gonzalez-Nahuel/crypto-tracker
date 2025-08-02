@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #333;
+  --background: #1f1f1f;
   --foreground: white;
+  --surface: #171717;
+  --card: #333;
+}
+
+@theme {
+  --color-surface: var(--surface);
+  --color-thin: #4a5565;
+  --color-card: var(--card);
 }
 
 body {
