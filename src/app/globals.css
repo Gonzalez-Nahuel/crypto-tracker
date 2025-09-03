@@ -11,6 +11,13 @@
   --color-surface: var(--surface);
   --color-thin: #4a5565;
   --color-card: var(--card);
+  --color-gradient-var: linear-gradient(
+    to right,
+    #dc2626,
+    #fca5a5,
+    #93c5fd,
+    #2563eb
+  );
 }
 
 body {

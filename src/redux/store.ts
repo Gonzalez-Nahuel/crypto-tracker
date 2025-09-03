@@ -1,18 +1,9 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
-
-const emptySlice = createSlice({
-  name: "emptyy",
-  initialState: { value: 0 },
-  reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-  },
-});
+import { configureStore } from "@reduxjs/toolkit";
+import cryptoApi from "./slices/crypto-slice";
 
 export const store = configureStore({
   reducer: {
-    empty: emptySlice.reducer,
+    cryptoApi,
   },
 });
 
