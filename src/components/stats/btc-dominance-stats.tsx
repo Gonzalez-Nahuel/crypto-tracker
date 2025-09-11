@@ -7,13 +7,17 @@ export const BtcDominanceStats = ({
 }: BtcDominanceStatsProps) => {
   return (
     <div>
-      <div className="text-sm mb-2.5 text-gray-400">
-        <span className="font-extrabold text-white">56</span> /
-        <span className="font-thin"> 100</span>
+      <div className="text-sm mb-2.5 text-gray-400 ">
+        <span className="font-extrabold text-white xl:text-2xl">56</span> /
+        <span className="font-thin xl:text-xl"> 100</span>
+      </div>
+      <div className="hidden xl:flex justify-between text-gray-400 font-bold text-sm mb-1.5">
+        <span>Altcoin</span>
+        <span>Bitcoin</span>
       </div>
       <div className="w-full">
         <div
-          className="h-1.5 rounded-full relative flex items-center"
+          className="h-1.5 rounded-full relative flex items-center xl:h-2"
           style={{
             background:
               "linear-gradient(to right, #dc2626 0%, #dc2626 25%, #fca5a5 25%, #fca5a5 50%, #93c5fd 50%, #93c5fd 75%, #2563eb 75%, #2563eb 100% )",

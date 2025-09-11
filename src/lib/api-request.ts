@@ -1,12 +1,14 @@
 type FetchParams = {
-  path: string;
-  params?: string;
+  baseUrl: string;
+  endpoint?: string;
 };
 
-export async function fetchFromCoinGecko({ path, params }: FetchParams) {
+export async function apiRequest({ baseUrl, endpoint }: FetchParams) {
+  const fullUrl = `${baseUrl}${endpoint ?? ""}`;
+
   try {
     const res = await fetch(
-      `/api/coingecko?endpoint=${path}${params ? `?${params}` : ""}`
+      `/api/api-fetch?endpoint=${encodeURIComponent(fullUrl)}`
     );
 
     const data = await res.json();

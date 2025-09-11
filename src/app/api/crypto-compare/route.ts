@@ -3,11 +3,14 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const endpoint = searchParams.get("endpoint") ?? "global";
+    const endpoint = searchParams.get("endpoint");
 
-    const res = await fetch(`https://api.coingecko.com/api/v3/${endpoint}`, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const res = await fetch(
+      `https://min-api.cryptocompare.com/${decodeURIComponent(endpoint ?? "")}`,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     if (!res.ok) {
       return NextResponse.json(
