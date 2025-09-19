@@ -23,7 +23,6 @@ const cryptoSlice = createSlice({
     builder.addCase(Request.fulfilled, (state, action) => {
       const endpoint = action.meta.arg.endpoint ?? action.meta.arg.baseUrl;
       state[endpoint] = action.payload;
-      console.log(action.payload);
     });
   },
 });

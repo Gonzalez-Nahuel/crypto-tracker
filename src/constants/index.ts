@@ -13,9 +13,10 @@ export const URL_APIS = {
 
 export const COINGECKO_ENDPOINTS = {
   global: "global",
-  bitcoin: "coins/markets?vs_currency=usd&ids=bitcoin",
+  top100:
+    "coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h,24h,7d",
 };
 
 export const CRYPTOCOMPARE_ENDPOINTS = {
-  marketCapChart: "data/v2/histoday?fsym=BTC&tsym=USD&limit=100",
+  marketCapChart: "data/v2/histoday?fsym=BTC&tsym=USD&limit=150",
 };

@@ -1,33 +1,37 @@
 import React, { useEffect, useRef } from "react";
-import {
-  createChart,
-  CrosshairMode,
-  LineSeries,
-  UTCTimestamp,
-} from "lightweight-charts";
+import { createChart, CrosshairMode, LineSeries } from "lightweight-charts";
+import { useAppSelector } from "@/redux/hooks";
+import { CRYPTOCOMPARE_ENDPOINTS } from "@/constants";
 
-type LineChartProps = {
-  value: number;
-  data: number[];
+type HistodayType = {
+  time: number;
+  close: number;
 };
 
-const LineChart = ({ value, data }: LineChartProps) => {
+type MiniLineChartProps = {
+  percentage: number;
+};
+
+const MiniLineChart = ({ percentage }: MiniLineChartProps) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
+  const histoday = useAppSelector(
+    (state) => state.cryptoApi[`${CRYPTOCOMPARE_ENDPOINTS.marketCapChart}`]
+  );
 
   useEffect(() => {
     if (!chartContainerRef.current) return;
-    chartContainerRef.current.innerHTML = "";
+    if (!histoday) return;
 
-    const now = Math.floor(Date.now() / 1000);
-
-    const histoData = data.map((val, i) => ({
-      time: (now - (data.length - i) * 3600) as UTCTimestamp,
-      value: val,
-    }));
+    const data = histoday.data.Data.Data.map(
+      ({ time, close }: HistodayType) => ({
+        time,
+        value: close,
+      })
+    );
 
     const chart = createChart(chartContainerRef.current, {
-      height: 38,
-      width: chartContainerRef.current.clientWidth || 100,
+      height: 46,
+      width: chartContainerRef.current.clientWidth,
       layout: {
         background: { color: "transparent" },
         textColor: "#ffffff",
@@ -46,12 +50,12 @@ const LineChart = ({ value, data }: LineChartProps) => {
     });
 
     const lineSeries = chart.addSeries(LineSeries, {
-      color: `${Math.sign(value) === -1 ? "#ef4444" : "#22c55e"}`,
+      color: `${Math.sign(percentage) === -1 ? "#ef4444" : "#22c55e"}`,
       lineWidth: 2,
       priceLineVisible: false,
     });
 
-    lineSeries.setData(histoData);
+    lineSeries.setData(data);
 
     chart.timeScale().fitContent();
 
@@ -66,9 +70,9 @@ const LineChart = ({ value, data }: LineChartProps) => {
       window.removeEventListener("resize", handleResize);
       chart.remove();
     };
-  }, [data, value]);
+  }, [histoday, percentage]);
 
-  return <div className="w-full" ref={chartContainerRef} />;
+  return <div className="max-w-full" ref={chartContainerRef} />;
 };
 
-export default LineChart;
+export default MiniLineChart;

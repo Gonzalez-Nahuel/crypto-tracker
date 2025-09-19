@@ -8,7 +8,7 @@ import { formatNumberToPercentage } from "@/utils/format-number-to-percentage";
 import { Total2MarketCap } from "@/utils/total-2-market-cap";
 import { total2MarketCapVariation } from "@/utils/total2-market-cap-variation";
 import { useAppSelector } from "@/redux/hooks";
-import MiniLineChart from "../stats/line-chart";
+import MiniLineChart from "../stats/chart-card";
 import { COINGECKO_ENDPOINTS } from "@/constants";
 
 type StatWithVariationProps = {
@@ -24,7 +24,7 @@ export const StatWithVariation = ({ value }: StatWithVariationProps) => {
     (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.global}`]
   );
   const btcMCVariation = useAppSelector(
-    (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.bitcoin}`]
+    (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.top100}`]
   );
 
   useEffect(() => {
@@ -65,19 +65,19 @@ export const StatWithVariation = ({ value }: StatWithVariationProps) => {
       ) : (
         <>
           <div className="xl:flex xl:items-center">
-            <div className="text-base font-bold xl:text-xl xl:mr-0.5">
+            <div className="text-sm font-semibold mb-0.5 xl:font-bold xl:text-xl xl:mr-0.5">
               {error ? "error" : formatNumberAbbreviated(marketCapUsd)}
             </div>
             <div
-              className={`text-xs xl:text-sm font-bold ${
-                Math.sign(percentage) === -1 ? "text-red-500" : "text-green-500"
+              className={`text-xs  font-medium xl:font-semibold ${
+                Math.sign(percentage) === -1
+                  ? "text-amber-500"
+                  : "text-teal-500"
               }`}
             >
-              {Math.sign(percentage) === -1 ? (
-                <ChevronDown className="inline w-3 h-3 mr-0.5" />
-              ) : (
-                <ChevronUp className="inline w-3 h-3 mr-0.5" />
-              )}
+              <span className="text-[8px] mr-1.5">
+                {Math.sign(percentage) === -1 ? "\u25BC" : "\u25B2"}
+              </span>
 
               <span>{formatNumberToPercentage(percentage)}</span>
             </div>

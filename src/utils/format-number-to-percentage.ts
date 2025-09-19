@@ -1,3 +1,4 @@
 export const formatNumberToPercentage = (num: number): string => {
-  return num.toFixed(2) + "%";
+  const number = Math.abs(num);
+  return number.toFixed(2) + "%";
 };
