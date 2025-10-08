@@ -1,23 +1,54 @@
 @import "tailwindcss";
 
-:root {
-  --background: #1f1f1f;
-  --foreground: white;
+/*@media (prefers-color-scheme: light) {
+  :root {
+    --background: #fff;
+    --foreground: black;
+    --surface: #fff;
+    --card: #fff;
+    --background-menu: #ddd;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+   
+  }
+}*/
+
+:root.dark {
+  --background: #1a1a1a;
+  --foreground: #ffffff;
   --surface: #171717;
-  --card: #333;
+  --card: #2a2a2a;
+  --background-menu: #373737;
+  --nav: #2d2d2d;
+  --theme-selector: #393939;
+  --selected-theme: #2f2f2f;
+  --thin: #4a5565;
+}
+
+:root.light {
+  --background: #fff;
+  --foreground: black;
+  --surface: #fff;
+  --card: #fff;
+  --background-menu: #ddd;
+  --nav: white;
+  --theme-selector: #e5e7eb;
+  --selected-theme: white;
+  --thin: #d1d5dc;
 }
 
 @theme {
+  --color-foreground: var(--foreground);
   --color-surface: var(--surface);
-  --color-thin: #4a5565;
+  --color-thin: var(--thin);
   --color-card: var(--card);
-  --color-gradient-var: linear-gradient(
-    to right,
-    #dc2626,
-    #fca5a5,
-    #93c5fd,
-    #2563eb
-  );
+  --color-background-menu: var(--background-menu);
+  --color-nav: var(--nav);
+  --color-theme-selector: var(--theme-selector);
+  --color-selected-theme: var(--selected-theme);
 }
 
 body {

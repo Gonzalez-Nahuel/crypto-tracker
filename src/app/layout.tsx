@@ -21,7 +21,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  let storagedTheme = localStorage.getItem("theme-tracker");
+                  if (storagedTheme === "system"){ storagedTheme = null};
+                  const preferTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                  const theme = (storagedTheme )|| (preferTheme ? "dark" : "light");
+                        
+                  document.documentElement.classList.toggle("dark", theme === "dark");
+                  document.documentElement.classList.toggle("light", theme === "light");
+                        
+                } catch (_) {}
+              }
+              )();`,
+          }}
+        />
+      </head>
       <body className={`antialiased`}>
         <ReduxProvider>{children}</ReduxProvider>
       </body>

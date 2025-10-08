@@ -85,7 +85,7 @@ export const StatWithCart = ({ value }: StatWithCartProps) => {
             arcWidth={0.1}
             percent={fearAndGreedValue}
             formatTextValue={(value) => `${value}`}
-            textColor="white"
+            textColor={["var(--foreground)"]}
             fontSize="13px"
             style={{
               width: "90px",
@@ -103,7 +103,7 @@ export const StatWithCart = ({ value }: StatWithCartProps) => {
             arcWidth={0.1}
             percent={fearAndGreedValue}
             formatTextValue={(value) => `${value}`}
-            textColor="white"
+            textColor={["var(--foreground)"]}
             fontSize="21px"
             style={{
               width: "160px",
