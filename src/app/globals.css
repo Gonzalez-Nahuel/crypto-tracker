@@ -1,21 +1,5 @@
 @import "tailwindcss";
 
-/*@media (prefers-color-scheme: light) {
-  :root {
-    --background: #fff;
-    --foreground: black;
-    --surface: #fff;
-    --card: #fff;
-    --background-menu: #ddd;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-   
-  }
-}*/
-
 :root.dark {
   --background: #1a1a1a;
   --foreground: #ffffff;
@@ -54,6 +38,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  overflow-x: hidden;
 }
 
 td,

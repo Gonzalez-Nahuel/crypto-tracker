@@ -13,6 +13,8 @@ export async function apiRequest({ baseUrl, endpoint }: FetchParams) {
 
     const data = await res.json();
 
+    console.log("repeat");
+
     if (!res.ok) {
       return {
         ok: false,

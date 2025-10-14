@@ -36,11 +36,11 @@ export const NavSM = ({ isActive, setIsActive }: NavSMProps) => {
 
   return (
     <nav className=" fixed right-0 left-0 top-0 bottom-0 bg-surface z-20 flex flex-col justify-between p-4 md:hidden">
-      <div className="w-screen -left-4 -top-4 relative bg-amber-300 flex justify-between items-center p-3 shadow-[0_2px_3px_#ffd230]">
+      <div className="relative -left-4 -top-4 w-screen flex justify-between items-center  px-5 py-4 shadow-[0_-3px_8px_var(--thin)]">
         <h1 className="text-xl font-bold text-white px-2.5 py-0.5 cursor-pointer bg-orange-500 border border-white rounded-sm">
           Tracker
         </h1>
-        <X className="cursor-pointer text-black" onClick={handlerClick} />
+        <X className="cursor-pointer" onClick={handlerClick} />
       </div>
       <ul className=""></ul>
       <div className="flex flex-col justify-between h-40">

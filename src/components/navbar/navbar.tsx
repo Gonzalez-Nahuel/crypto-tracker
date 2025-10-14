@@ -15,8 +15,6 @@ export const NavBar = () => {
   useEffect(() => {
     const storagedTheme = localStorage.getItem("theme-tracker");
 
-    console.log("repeat");
-
     if (!storagedTheme || storagedTheme === "system") {
       dispatch(setTheme("system"));
     } else if (storagedTheme === "dark") {

@@ -1,52 +1,148 @@
 "use client";
-import { COINGECKO_ENDPOINTS } from "@/constants";
-import { useAppSelector } from "@/redux/hooks";
-import { CryptoDetails } from "./crypto-details";
 import { CryptoDetailsData } from "@/interfaces";
+import { currencyFormatter } from "@/utils/currency-formatter";
+import { formatNumberAbbreviated } from "@/utils/format-number-abbreviated";
+import { formatNumberToPercentage } from "@/utils/format-number-to-percentage";
+import Image from "next/image";
+import { ProgressIndicator } from "../stats/progress-indicator";
+import LineChart from "../stats/line-chart";
+import { useRouter } from "next/navigation";
 
-export const CryptoList = () => {
-  const list = useAppSelector(
-    (state) => state.cryptoApi[COINGECKO_ENDPOINTS.top100]
-  );
+interface CryptoDetailsProps {
+  data: CryptoDetailsData;
+}
 
-  const details = list?.data ?? [];
+export const CryptoList = ({ data }: CryptoDetailsProps) => {
+  const router = useRouter();
+
+  const handlerClick = (id: string) => {
+    router.push(`/details/${id}`);
+  };
 
   return (
-    <section className=" my-6">
-      <h2 className="text-2xl font-bold mb-2">Top</h2>
-      <table className="border-t border-t-thin font-medium text-sm w-full">
-        <colgroup>
-          <col className="w-12" />
-          <col className="w-80" />
-          <col className="max-w-34" />
-          <col className="max-w-34" />
-          <col className="max-w-34" />
-          <col className="max-w-34" />
-          <col className="max-w-56" />
-          <col className="max-w-56" />
-          <col className="max-w-44" />
-          <col className="w-auto" />
-        </colgroup>
-        <thead>
-          <tr className="border-b border-b-thin h-12">
-            <th>#</th>
-            <th className="text-start">Name</th>
-            <th className="text-end">Price</th>
-            <th className="text-end">1h %</th>
-            <th className="text-end">24h %</th>
-            <th className="text-end">7d %</th>
-            <th className="text-end">Market Cap</th>
-            <th className="text-end">Volume(24h)</th>
-            <th className="text-end">Circulating Supply</th>
-            <th className="hidden xl:table-cell text-end">Last 7 Days</th>
-          </tr>
-        </thead>
-        <tbody>
-          {details!.map((data: CryptoDetailsData) => (
-            <CryptoDetails key={data.id} data={data} />
-          ))}
-        </tbody>
-      </table>
-    </section>
+    <tr
+      onClick={() => handlerClick(data.id)}
+      className="border-b border-b-thin h-12 cursor-pointer"
+    >
+      <td className="text-center p-1.5">{data.market_cap_rank}</td>
+      <td>
+        <div className="flex items-center gap-2">
+          <Image
+            className="rounded-full" /*(\u25BC) flecha abajo*/
+            src={data.image} /*(\u25B2) flecha arriba*/
+            alt={data.id}
+            width={25}
+            height={25}
+          />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+            <span className="font-semibold">{data.name}</span>
+            <span className="text-gray-400 font-normal text-xs sm:text-sm">
+              {data.symbol.toUpperCase()}
+            </span>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div className="text-end">
+          <span>{currencyFormatter(data.current_price)}</span>
+        </div>
+      </td>
+      <td>
+        <div
+          className={`text-end ${
+            Math.sign(data.price_change_percentage_1h_in_currency) === -1
+              ? "text-amber-500"
+              : "text-teal-500"
+          } `}
+        >
+          <span className="text-[8px] mr-1">
+            {Math.sign(data.price_change_percentage_1h_in_currency) === -1
+              ? "\u25BC"
+              : "\u25B2"}
+          </span>
+          <span>
+            {formatNumberToPercentage(
+              data.price_change_percentage_1h_in_currency
+            )}
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          className={`text-end  ${
+            Math.sign(data.price_change_percentage_24h_in_currency) === -1
+              ? "text-amber-500"
+              : "text-teal-500"
+          } `}
+        >
+          <span className="text-[8px] mr-1">
+            {Math.sign(data.price_change_percentage_24h_in_currency) === -1
+              ? "\u25BC"
+              : "\u25B2"}
+          </span>
+          <span>
+            {formatNumberToPercentage(data.market_cap_change_percentage_24h)}
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          className={`text-end  ${
+            Math.sign(data.price_change_percentage_7d_in_currency) === -1
+              ? "text-amber-500"
+              : "text-teal-500"
+          } `}
+        >
+          <span className="text-[8px] mr-1">
+            {Math.sign(data.price_change_percentage_7d_in_currency) === -1
+              ? "\u25BC"
+              : "\u25B2"}
+          </span>
+          <span>
+            {formatNumberToPercentage(
+              data.price_change_percentage_7d_in_currency
+            )}
+          </span>
+        </div>
+      </td>
+      <td>
+        <div className="text-end ">
+          <span>{currencyFormatter(data.market_cap)}</span>
+        </div>
+      </td>
+      <td className="text-end ">
+        <div>
+          <span>{currencyFormatter(data.total_volume)}</span>
+        </div>
+        <div className="text-xs">
+          {formatNumberAbbreviated(data.total_volume / data.current_price)}
+        </div>
+      </td>
+      <td className="text-end ">
+        <div className="flex flex-col items-end">
+          <div className="mb-1">
+            {formatNumberAbbreviated(data.circulating_supply)}
+          </div>
+          <div>
+            {data.max_supply ? (
+              <ProgressIndicator
+                a={data.circulating_supply}
+                b={data.max_supply}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      </td>
+      <td className="xl:flex justify-end hidden">
+        <div className="w-44">
+          <LineChart
+            value={data.price_change_percentage_7d_in_currency}
+            data={data.sparkline_in_7d.price}
+          />
+        </div>
+      </td>
+    </tr>
   );
 };

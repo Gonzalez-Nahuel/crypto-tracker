@@ -1,11 +1,11 @@
 import { MetricCardWrapper } from "@/components/metric-cards/metric-card-wrapper";
-import { CryptoList } from "@/components/top-100-list/crypto-list";
+import { CryptoTable } from "@/components/top-100-list/crypto-table";
 
 export default function Home() {
   return (
     <main className="mx-4">
       <MetricCardWrapper />
-      <CryptoList />
+      <CryptoTable />
     </main>
   );
 }

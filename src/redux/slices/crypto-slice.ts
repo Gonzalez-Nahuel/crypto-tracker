@@ -5,6 +5,7 @@ type EndpointState = {
   ok: boolean;
   data?: any;
   error?: string;
+  timeStamp: number;
 };
 
 type FetchState = {
@@ -22,7 +23,7 @@ const cryptoSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(Request.fulfilled, (state, action) => {
       const endpoint = action.meta.arg.endpoint ?? action.meta.arg.baseUrl;
-      state[endpoint] = action.payload;
+      state[endpoint] = { ...action.payload, timeStamp: Date.now() };
     });
   },
 });
