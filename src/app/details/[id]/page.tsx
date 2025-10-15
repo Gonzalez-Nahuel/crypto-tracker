@@ -7,7 +7,5 @@ type DetailsProps = {
 export default async function Details({ params }: DetailsProps) {
   const { id } = await params;
 
-  console.log(id);
-
   return <CryptoDetails id={id} />;
 }
