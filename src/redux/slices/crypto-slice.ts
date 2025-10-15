@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { apiRequest } from "@/lib/api-request";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 

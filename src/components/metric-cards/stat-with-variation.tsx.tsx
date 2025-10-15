@@ -1,6 +1,5 @@
 "use client";
-//import { fetchFromCoinGecko } from "@/lib/coingecko-fetch";
-import { ChevronDown, ChevronUp } from "lucide-react";
+
 import { useEffect, useState } from "react";
 import { formatNumberAbbreviated } from "../../utils/format-number-abbreviated";
 import { GlobalData } from "@/interfaces";
