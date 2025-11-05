@@ -3,19 +3,47 @@ import { COINGECKO_ENDPOINTS } from "@/constants";
 import { useAppSelector } from "@/redux/hooks";
 import { CryptoList } from "./crypto-list";
 import { CryptoDetailsData } from "@/interfaces";
+import { useState } from "react";
 
 export const CryptoTable = () => {
+  const [isActive, setIsActive] = useState<boolean>(true);
+
   const list = useAppSelector(
     (state) => state.cryptoApi[COINGECKO_ENDPOINTS.top100]
   );
 
   const details = list?.data ?? [];
 
+  const handlerIsActive = () => setIsActive(!isActive);
+
   return (
     <section className=" my-6 overflow-auto">
-      <h2 className="text-2xl font-bold mb-2">Top</h2>
+      {/*<h2 className="text-2xl font-bold mb-2">Top</h2>*/}
+      <ul className="text-2xl font-bold flex gap-8">
+        <li
+          onClick={handlerIsActive}
+          className={`${
+            isActive
+              ? "relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full"
+              : ""
+          } cursor-pointer p-4 `}
+        >
+          Top
+        </li>
+        <li
+          onClick={handlerIsActive}
+          className={`${
+            !isActive
+              ? "relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full"
+              : ""
+          } cursor-pointer p-4`}
+        >
+          My list
+        </li>
+      </ul>
       <table className="border-t border-t-thin font-medium text-sm w-full">
         <colgroup>
+          <col />
           <col className="w-12" />
           <col className="w-80" />
           <col className="max-w-34" />
@@ -29,6 +57,7 @@ export const CryptoTable = () => {
         </colgroup>
         <thead>
           <tr className="border-b border-b-thin h-12">
+            <th></th>
             <th>#</th>
             <th className="text-start">Name</th>
             <th className="text-end">Price</th>

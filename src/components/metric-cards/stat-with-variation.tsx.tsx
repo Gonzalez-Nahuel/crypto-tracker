@@ -7,8 +7,8 @@ import { formatNumberToPercentage } from "@/utils/format-number-to-percentage";
 import { Total2MarketCap } from "@/utils/total-2-market-cap";
 import { total2MarketCapVariation } from "@/utils/total2-market-cap-variation";
 import { useAppSelector } from "@/redux/hooks";
-import MiniLineChart from "../stats/chart-card";
-import { COINGECKO_ENDPOINTS } from "@/constants";
+import { COINGECKO_ENDPOINTS, CRYPTOCOMPARE_ENDPOINTS } from "@/constants";
+import LineChart from "../shared/line-chart";
 
 type StatWithVariationProps = {
   value: string;
@@ -25,6 +25,11 @@ export const StatWithVariation = ({ value }: StatWithVariationProps) => {
   const btcMCVariation = useAppSelector(
     (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.top100}`]
   );
+  const histoday = useAppSelector(
+    (state) => state.cryptoApi[`${CRYPTOCOMPARE_ENDPOINTS.marketCapChart}`]
+  );
+
+  const histodayData = histoday?.data?.Data?.Data ?? [];
 
   useEffect(() => {
     if (!globalData || !btcMCVariation) return;
@@ -82,7 +87,7 @@ export const StatWithVariation = ({ value }: StatWithVariationProps) => {
             </div>
           </div>
           <div className="hidden xl:block">
-            <MiniLineChart percentage={percentage} />
+            <LineChart value={percentage} data={histodayData} height={46} />
           </div>
         </>
       )}

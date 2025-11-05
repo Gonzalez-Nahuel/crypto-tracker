@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root.dark {
-  --background: #1a1a1a;
+  --background: rgb(26, 26, 26);
   --foreground: #ffffff;
   --surface: #171717;
   --card: #2a2a2a;

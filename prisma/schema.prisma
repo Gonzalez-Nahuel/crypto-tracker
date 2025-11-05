@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs https//pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate https//pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model  CryptoDetailsData {
+  id String @id @map("_id") @db.ObjectId
+  symbol String
+  name String
+  image String
+  current_price Float
+  market_cap Float
+  market_cap_rank Float
+  fully_diluted_valuation Float
+  total_volume Float
+  market_cap_change_24h Float
+  market_cap_change_percentage_24h Float
+  circulating_supply Float
+  total_supply Float
+  max_supply Float
+  sparkline_in_7d Json
+  price_change_percentage_1h_in_currency Float
+  price_change_percentage_24h_in_currency Float
+  price_change_percentage_7d_in_currency Float
+}

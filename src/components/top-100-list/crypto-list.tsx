@@ -2,11 +2,11 @@
 import { CryptoDetailsData } from "@/interfaces";
 import { currencyFormatter } from "@/utils/currency-formatter";
 import { formatNumberAbbreviated } from "@/utils/format-number-abbreviated";
-import { formatNumberToPercentage } from "@/utils/format-number-to-percentage";
 import Image from "next/image";
-import { ProgressIndicator } from "../stats/progress-indicator";
-import LineChart from "../stats/line-chart";
+import { ProgressIndicator } from "../shared/progress-indicator";
+import LineChart from "../shared/line-chart";
 import { useRouter } from "next/navigation";
+import { PriceVariation } from "../shared/price-variation";
 
 interface CryptoDetailsProps {
   data: CryptoDetailsData;
@@ -24,6 +24,7 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
       onClick={() => handlerClick(data.id)}
       className="border-b border-b-thin h-12 cursor-pointer"
     >
+      <td></td>
       <td className="text-center p-1.5">{data.market_cap_rank}</td>
       <td>
         <div className="flex items-center gap-2">
@@ -47,63 +48,20 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
           <span>{currencyFormatter(data.current_price)}</span>
         </div>
       </td>
-      <td>
-        <div
-          className={`text-end ${
-            Math.sign(data.price_change_percentage_1h_in_currency) === -1
-              ? "text-amber-500"
-              : "text-teal-500"
-          } `}
-        >
-          <span className="text-[8px] mr-1">
-            {Math.sign(data.price_change_percentage_1h_in_currency) === -1
-              ? "\u25BC"
-              : "\u25B2"}
-          </span>
-          <span>
-            {formatNumberToPercentage(
-              data.price_change_percentage_1h_in_currency
-            )}
-          </span>
-        </div>
+      <td className="text-end">
+        <PriceVariation
+          variation={data.price_change_percentage_1h_in_currency}
+        />
       </td>
-      <td>
-        <div
-          className={`text-end  ${
-            Math.sign(data.price_change_percentage_24h_in_currency) === -1
-              ? "text-amber-500"
-              : "text-teal-500"
-          } `}
-        >
-          <span className="text-[8px] mr-1">
-            {Math.sign(data.price_change_percentage_24h_in_currency) === -1
-              ? "\u25BC"
-              : "\u25B2"}
-          </span>
-          <span>
-            {formatNumberToPercentage(data.market_cap_change_percentage_24h)}
-          </span>
-        </div>
+      <td className="text-end">
+        <PriceVariation
+          variation={data.price_change_percentage_24h_in_currency}
+        />
       </td>
-      <td>
-        <div
-          className={`text-end  ${
-            Math.sign(data.price_change_percentage_7d_in_currency) === -1
-              ? "text-amber-500"
-              : "text-teal-500"
-          } `}
-        >
-          <span className="text-[8px] mr-1">
-            {Math.sign(data.price_change_percentage_7d_in_currency) === -1
-              ? "\u25BC"
-              : "\u25B2"}
-          </span>
-          <span>
-            {formatNumberToPercentage(
-              data.price_change_percentage_7d_in_currency
-            )}
-          </span>
-        </div>
+      <td className="text-end">
+        <PriceVariation
+          variation={data.price_change_percentage_7d_in_currency}
+        />
       </td>
       <td>
         <div className="text-end ">
@@ -140,6 +98,7 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
           <LineChart
             value={data.price_change_percentage_7d_in_currency}
             data={data.sparkline_in_7d.price}
+            height={38}
           />
         </div>
       </td>

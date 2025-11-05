@@ -5,12 +5,14 @@ import { NavSM } from "./nav-sm";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { setTheme } from "@/redux/slices/theme-slice";
+import { useRouter } from "next/navigation";
 
 export const NavBar = () => {
   const [isActiveXL, setIsActiveXL] = useState(false);
   const [isActiveXS, setIsActiveXS] = useState(false);
 
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const storagedTheme = localStorage.getItem("theme-tracker");
@@ -24,10 +26,17 @@ export const NavBar = () => {
     }
   }, [dispatch]);
 
+  const handlClick = () => {
+    router.push("/");
+  };
+
   return (
     <header className="bg-surface relative p-2.5 border-b border-thin flex justify-between items-center ">
       <div className="px-4">
-        <h1 className="text-xl font-bold text-white px-2.5 py-0.5 cursor-pointer bg-orange-500 border border-white rounded-sm">
+        <h1
+          className="text-xl font-bold text-white px-2.5 py-0.5 cursor-pointer bg-orange-500 border border-white rounded-sm"
+          onClick={handlClick}
+        >
           Tracker
         </h1>
       </div>

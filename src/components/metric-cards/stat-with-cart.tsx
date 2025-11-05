@@ -2,7 +2,7 @@
 import { FearAndGreed, GlobalData } from "@/interfaces";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { BtcDominanceStats } from "../stats/btc-dominance-stats";
+import { BtcDominanceStats } from "../shared/btc-dominance-stats";
 import { useAppSelector } from "@/redux/hooks";
 import { COINGECKO_ENDPOINTS, URL_APIS } from "@/constants";
 
