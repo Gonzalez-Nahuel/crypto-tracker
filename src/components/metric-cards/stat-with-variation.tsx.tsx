@@ -42,7 +42,7 @@ export const StatWithVariation = ({ value }: StatWithVariationProps) => {
       setData(globalData.data.data ?? null);
       setError(null);
       setBtcMCV(
-        btcMCVariation.data[0].market_cap_change_percentage_24h ?? null
+        btcMCVariation?.data?.[0]?.market_cap_change_percentage_24h ?? 0
       );
     }
   }, [globalData, btcMCVariation]);

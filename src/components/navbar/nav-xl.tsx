@@ -4,9 +4,10 @@ import { useEffect, useRef } from "react";
 
 type NavXLProps = {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setAuthFormActive: React.Dispatch<React.SetStateAction<boolean | string>>;
 };
 
-export const NavXl = ({ setIsActive }: NavXLProps) => {
+export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
   const currenNav = useRef<HTMLElement>(null);
 
   const theme = useAppSelector((state) => state.theme);
@@ -33,6 +34,10 @@ export const NavXl = ({ setIsActive }: NavXLProps) => {
     };
   }, [setIsActive]);
 
+  const handlerAuthMode = (mode: string) => {
+    setAuthFormActive(mode);
+  };
+
   return (
     <>
       <div className=" absolute top-14 right-[9px] border-l-[16px] border-r-[16px] border-b-8 border-l-transparent border-r-transparent border-b-thin"></div>
@@ -43,10 +48,22 @@ export const NavXl = ({ setIsActive }: NavXLProps) => {
         <ul className="text-xs h-full flex flex-col justify-around">
           <li className="">
             <div className="flex justify-around items-center">
-              <button className="py-2 px-4 font-extrabold border-2 bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer border-indigo-400  rounded-lg">
+              <button
+                onClick={() => {
+                  setIsActive(false);
+                  handlerAuthMode("login");
+                }}
+                className="py-2 px-4 font-extrabold border-2 bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer border-indigo-400  rounded-lg"
+              >
                 Log In
               </button>
-              <button className="py-2 px-4 font-semibold text-indigo-500 cursor-pointer hover:text-indigo-400 border-2 border-indigo-700 rounded-lg">
+              <button
+                onClick={() => {
+                  setIsActive(false);
+                  handlerAuthMode("signup");
+                }}
+                className="py-2 px-4 font-semibold text-indigo-500 cursor-pointer hover:text-indigo-400 border-2 border-indigo-700 rounded-lg"
+              >
                 Sign Up
               </button>
             </div>

@@ -13,19 +13,17 @@ export async function apiRequest({ baseUrl, endpoint }: FetchParams) {
 
     const data = await res.json();
 
-    console.log("repeat");
-
     if (!res.ok) {
       return {
         ok: false,
-        error: res.statusText || "Ocurrio un error",
+        error: `${res.statusText}: try cliente 1` || "Ocurrio un error",
       };
     }
 
     if (!data.ok) {
       return {
         ok: false,
-        error: data.error,
+        error: `${data.error}: try cliente 2`,
       };
     }
 
@@ -40,7 +38,7 @@ export async function apiRequest({ baseUrl, endpoint }: FetchParams) {
     return {
       ok: false,
       status: null,
-      error: message,
+      error: `${message}: catch cliente`,
     };
   }
 }

@@ -5,32 +5,27 @@
 // Try Prisma Accelerate https//pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output = "../src/generated/prisma"
+  engineType = "library"
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-model  CryptoDetailsData {
-  id String @id @map("_id") @db.ObjectId
-  symbol String
-  name String
-  image String
-  current_price Float
-  market_cap Float
-  market_cap_rank Float
-  fully_diluted_valuation Float
-  total_volume Float
-  market_cap_change_24h Float
-  market_cap_change_percentage_24h Float
-  circulating_supply Float
-  total_supply Float
-  max_supply Float
-  sparkline_in_7d Json
-  price_change_percentage_1h_in_currency Float
-  price_change_percentage_24h_in_currency Float
-  price_change_percentage_7d_in_currency Float
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  username String 
+  password String
+  watchlist WatchList[]
+}
+
+model  WatchList {
+  id Int @id @default(autoincrement())
+  cryptoId String
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 }

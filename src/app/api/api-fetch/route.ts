@@ -5,13 +5,26 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const endpoint = searchParams.get("endpoint");
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
+
     const res = await fetch(`${decodeURIComponent(endpoint!)}`, {
-      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "Mozilla/5.0",
+      },
+      cache: "no-store",
     });
+
+    clearTimeout(timeout);
 
     if (!res.ok) {
       return NextResponse.json(
-        { ok: false, error: res.statusText || "Ocurrio un error" },
+        {
+          ok: false,
+          error: res.statusText || "Ocurrio un error",
+        },
         { status: res.status }
       );
     }

@@ -1,3 +1,5 @@
+"use client";
+
 import storage from "redux-persist/lib/storage";
 import cryptoApi from "./slices/crypto-slice";
 import theme from "./slices/theme-slice";
@@ -26,7 +28,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = configureStore({
+export const clientStore = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -36,19 +38,7 @@ export const store = configureStore({
     }),
 });
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(clientStore);
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-/*const rootReducer = combineReducers({
-  cryptoApi,
-  theme,
-});
-
-export const store = configureStore({
-  reducer: rootReducer,
-});
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-*/
+export type RootState = ReturnType<typeof clientStore.getState>;
+export type AppDispatch = typeof clientStore.dispatch;

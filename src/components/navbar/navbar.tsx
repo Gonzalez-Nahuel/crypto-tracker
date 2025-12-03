@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { setTheme } from "@/redux/slices/theme-slice";
 import { useRouter } from "next/navigation";
+import { AuthForm } from "../shared/auth-form";
 
 export const NavBar = () => {
   const [isActiveXL, setIsActiveXL] = useState(false);
   const [isActiveXS, setIsActiveXS] = useState(false);
+  const [authFormActive, setAuthFormActive] = useState<boolean | string>(false);
 
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -57,9 +59,21 @@ export const NavBar = () => {
           <Menu />
         </button>
       </div>
-      {isActiveXL && <NavXl setIsActive={setIsActiveXL} />}
+      {isActiveXL && (
+        <NavXl
+          setIsActive={setIsActiveXL}
+          setAuthFormActive={setAuthFormActive}
+        />
+      )}
       {isActiveXS && (
-        <NavSM isActive={isActiveXS} setIsActive={setIsActiveXS} />
+        <NavSM
+          isActive={isActiveXS}
+          setIsActive={setIsActiveXS}
+          setAuthFormActive={setAuthFormActive}
+        />
+      )}
+      {authFormActive && (
+        <AuthForm mode={authFormActive} setAuthFormActive={setAuthFormActive} />
       )}
     </header>
   );

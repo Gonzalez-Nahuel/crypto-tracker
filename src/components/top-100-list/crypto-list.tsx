@@ -7,6 +7,7 @@ import { ProgressIndicator } from "../shared/progress-indicator";
 import LineChart from "../shared/line-chart";
 import { useRouter } from "next/navigation";
 import { PriceVariation } from "../shared/price-variation";
+import { AddCryptoToList } from "@/app/actions/watch-list/actions";
 
 interface CryptoDetailsProps {
   data: CryptoDetailsData;
@@ -15,16 +16,27 @@ interface CryptoDetailsProps {
 export const CryptoList = ({ data }: CryptoDetailsProps) => {
   const router = useRouter();
 
-  const handlerClick = (id: string) => {
+  const handlerRoute = (id: string) => {
     router.push(`/details/${id}`);
+  };
+
+  const handlerAddFavCrypto = (crypto: CryptoDetailsData) => {
+    AddCryptoToList(crypto);
   };
 
   return (
     <tr
-      onClick={() => handlerClick(data.id)}
+      onClick={() => handlerRoute(data.id)}
       className="border-b border-b-thin h-12 cursor-pointer"
     >
-      <td></td>
+      <td
+        onClick={(e) => {
+          e.stopPropagation();
+          handlerAddFavCrypto(data);
+        }}
+      >
+        click
+      </td>
       <td className="text-center p-1.5">{data.market_cap_rank}</td>
       <td>
         <div className="flex items-center gap-2">
