@@ -37,14 +37,14 @@ export const NavBar = () => {
 
   return (
     <header className="bg-surface relative p-2.5 border-b border-thin flex justify-between items-center ">
-      <div className="px-4">
+      <div className="px-4 flex justify-between gap-10 items-center">
         <h1
           className="text-xl font-bold text-white px-2.5 py-0.5 cursor-pointer bg-orange-500 border border-white rounded-sm"
           onClick={handleGoHome}
         >
           Tracker
         </h1>
-        <h2>{user}</h2>
+        <span>{`° ${user} °`}</span>
       </div>
       <div className="flex justify-between gap-7 items-center">
         <button className="text-blue-400 hover:text-inherit cursor-pointer">
