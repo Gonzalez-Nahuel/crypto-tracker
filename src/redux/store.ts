@@ -1,6 +1,7 @@
 import storage from "redux-persist/lib/storage";
 import cryptoApi from "./slices/crypto-slice";
 import theme from "./slices/theme-slice";
+import auth from "./slices/auth-slice";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
   persistStore,
@@ -16,6 +17,7 @@ import {
 const rootReducer = combineReducers({
   cryptoApi,
   theme,
+  auth,
 });
 
 const persistConfig = {
@@ -40,15 +42,3 @@ export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-/*const rootReducer = combineReducers({
-  cryptoApi,
-  theme,
-});
-
-export const store = configureStore({
-  reducer: rootReducer,
-});
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-*/

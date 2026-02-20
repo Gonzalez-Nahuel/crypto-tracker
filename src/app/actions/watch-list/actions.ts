@@ -1,4 +1,4 @@
-"use server";
+/*"use server";
 
 import { prisma } from "@/lib/prisma";
 import { CryptoDetailsData } from "@/interfaces";
@@ -17,4 +17,4 @@ export const AddCryptoToList = async (data: CryptoDetailsData) => {
   } catch (e) {
     console.error("error:", e);
   }
-};
+};*/

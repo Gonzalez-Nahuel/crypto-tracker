@@ -1,4 +1,4 @@
-import { AuthForm } from "@/components/shared/auth-form";
+import { AuthForm } from "@/components/auth/auth-form";
 
 export default function LogIn() {
   return <AuthForm mode="login" />;

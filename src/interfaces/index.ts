@@ -41,3 +41,15 @@ export interface CryptoDetailsData {
   price_change_percentage_24h_in_currency: number;
   price_change_percentage_7d_in_currency: number;
 }
+
+export interface PrivateUser {
+  id: number;
+  email: string;
+  username: string;
+  password: string;
+}
+
+export interface PublicUser {
+  email: string;
+  username: string;
+}

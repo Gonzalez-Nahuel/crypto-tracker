@@ -1,15 +1,53 @@
 "use client";
 
+import { authRequest } from "@/lib/auth/auth-request";
+import { useAppDispatch } from "@/redux/hooks";
+import { fetchMe } from "@/redux/slices/auth-slice";
 import { X } from "lucide-react";
 import { useState } from "react";
 
 type AuthFormProps = {
   mode: string | boolean;
   setAuthFormActive: React.Dispatch<React.SetStateAction<boolean | string>>;
+  setIsActiveNavXl: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsActiveNavXs: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoginSuccessOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const AuthForm = ({ mode, setAuthFormActive }: AuthFormProps) => {
+export const AuthForm = ({
+  mode,
+  setAuthFormActive,
+  setIsActiveNavXl,
+  setIsActiveNavXs,
+  setIsLoginSuccessOpen,
+}: AuthFormProps) => {
   const [modeActive, setModeActive] = useState(mode);
+  const [isAuthMessage, setIsAuthMessage] = useState(false);
+  const [authMessage, setAuthMessage] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+
+  const handlerAuth = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const url = modeActive === "login" ? "/api/auth/login" : "/api/auth/signup";
+
+    const form = new FormData(e.currentTarget);
+
+    const authResponse = await authRequest(url, form);
+
+    if (!authResponse.ok) {
+      setIsAuthMessage(true);
+      setAuthMessage(authResponse.message);
+      return;
+    }
+
+    await dispatch(fetchMe());
+    setIsAuthMessage(false);
+    setIsActiveNavXl(false);
+    setIsActiveNavXs(false);
+    setAuthFormActive(false);
+    setIsLoginSuccessOpen(true);
+  };
 
   return (
     <div className="fixed flex justify-center items-center inset-0 bg-black/30 z-30 no-scrollbar">
@@ -20,12 +58,16 @@ export const AuthForm = ({ mode, setAuthFormActive }: AuthFormProps) => {
         />
         <div className="max-h-[90vh] overflow-y-auto no-scrollbar ">
           <form
+            onSubmit={handlerAuth}
             action=""
             className="flex flex-col justify-between w-md  bg-card rounded-2xl h-[600px] p-6 no-scrollbar"
           >
             <ul className="flex justify-center gap-4 text-2xl font-bold">
               <li
-                onClick={() => setModeActive("login")}
+                onClick={() => {
+                  setModeActive("login");
+                  setIsAuthMessage(false);
+                }}
                 className={`${
                   modeActive === "login"
                     ? "relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-1/2 after:-translate-x-1/2 after:h-1 after:bg-teal-400 after:rounded-full"
@@ -35,7 +77,10 @@ export const AuthForm = ({ mode, setAuthFormActive }: AuthFormProps) => {
                 Log In
               </li>
               <li
-                onClick={() => setModeActive("signup")}
+                onClick={() => {
+                  setModeActive("signup");
+                  setIsAuthMessage(false);
+                }}
                 className={`${
                   modeActive === "signup"
                     ? "relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-1/2 after:-translate-x-1/2 after:h-1 after:bg-teal-400 after:rounded-full"
@@ -55,6 +100,7 @@ export const AuthForm = ({ mode, setAuthFormActive }: AuthFormProps) => {
               </label>
               <input
                 id="username"
+                name="username"
                 type="text"
                 placeholder="Enter your username..."
                 className="bg-surface p-4 rounded-md border border-thin text-sm focus:outline-blue-400 focus:outline-2"
@@ -66,6 +112,7 @@ export const AuthForm = ({ mode, setAuthFormActive }: AuthFormProps) => {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="Enter your address..."
                 className="bg-surface p-4 rounded-md border border-thin text-sm focus:outline-blue-400 focus:outline-2"
@@ -77,10 +124,14 @@ export const AuthForm = ({ mode, setAuthFormActive }: AuthFormProps) => {
               </label>
               <input
                 id="password"
+                name="password"
                 type="password"
                 placeholder="Enter your password..."
                 className="bg-surface p-4 rounded-md border border-thin text-sm focus:outline-blue-400 focus:outline-2"
               />
+              {isAuthMessage && (
+                <span className="text-amber-500">{authMessage}</span>
+              )}
             </div>
             <button
               type="submit"

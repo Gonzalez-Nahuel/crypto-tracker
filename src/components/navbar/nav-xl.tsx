@@ -1,5 +1,7 @@
 import { useTheme } from "@/lib/hooks/useTheme";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { clearUser } from "@/redux/slices/auth-slice";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 type NavXLProps = {
@@ -10,7 +12,11 @@ type NavXLProps = {
 export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
   const currenNav = useRef<HTMLElement>(null);
 
+  const router = useRouter();
+
+  const session = useAppSelector((state) => state.auth.session);
   const theme = useAppSelector((state) => state.theme);
+  const dispatch = useAppDispatch();
 
   const { changeTheme } = useTheme();
 
@@ -38,6 +44,17 @@ export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
     setAuthFormActive(mode);
   };
 
+  const handleLogout = async () => {
+    await fetch("api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    dispatch(clearUser());
+
+    router.refresh();
+  };
+
   return (
     <>
       <div className=" absolute top-14 right-[9px] border-l-[16px] border-r-[16px] border-b-8 border-l-transparent border-r-transparent border-b-thin"></div>
@@ -48,24 +65,37 @@ export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
         <ul className="text-xs h-full flex flex-col justify-around">
           <li className="">
             <div className="flex justify-around items-center">
-              <button
-                onClick={() => {
-                  setIsActive(false);
-                  handlerAuthMode("login");
-                }}
-                className="py-2 px-4 font-extrabold border-2 bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer border-indigo-400  rounded-lg"
-              >
-                Log In
-              </button>
-              <button
-                onClick={() => {
-                  setIsActive(false);
-                  handlerAuthMode("signup");
-                }}
-                className="py-2 px-4 font-semibold text-indigo-500 cursor-pointer hover:text-indigo-400 border-2 border-indigo-700 rounded-lg"
-              >
-                Sign Up
-              </button>
+              {!session ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setIsActive(false);
+                      handlerAuthMode("login");
+                    }}
+                    className="py-2 px-4 font-extrabold border-2 bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer border-indigo-400  rounded-lg"
+                  >
+                    Log In
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsActive(false);
+                      handlerAuthMode("signup");
+                    }}
+                    className="py-2 px-4 font-semibold text-indigo-500 cursor-pointer hover:text-indigo-400 border-2 border-indigo-700 rounded-lg"
+                  >
+                    Sign Up
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    handleLogout();
+                  }}
+                  className="py-2 px-4 font-extrabold border-2 bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer border-indigo-400  rounded-lg"
+                >
+                  Log out
+                </button>
+              )}
             </div>
           </li>
 
