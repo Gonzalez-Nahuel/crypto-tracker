@@ -62,6 +62,8 @@ export const NavSM = ({
 
   const handleGoHome = () => {
     router.push("/");
+    setIsActive(false);
+    document.body.classList.remove("overflow-hidden");
   };
 
   return (
@@ -74,7 +76,7 @@ export const NavSM = ({
           >
             Tracker
           </h1>
-          <X className="cursor-pointer" onClick={handlerClick} />
+          <X className="cursor-pointer" onClick={handleCloseMenu} />
         </div>
         <ul className=""></ul>
         <div className="flex flex-col justify-between h-40">
