@@ -40,7 +40,7 @@ export const NavSM = ({
     };
   }, [isActive, setIsActive]);
 
-  const handlerClick = () => {
+  const handleCloseMenu = () => {
     setIsActive(false);
     document.body.classList.remove("overflow-hidden");
   };
