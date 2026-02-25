@@ -7,7 +7,7 @@ import { ProgressIndicator } from "../shared/progress-indicator";
 import LineChart from "../shared/line-chart";
 import { useRouter } from "next/navigation";
 import { PriceVariation } from "../shared/price-variation";
-import { AddCryptoToList } from "@/app/actions/watch-list/actions";
+//import { AddCryptoToList } from "@/app/actions/watch-list/actions";
 
 interface CryptoDetailsProps {
   data: CryptoDetailsData;
@@ -20,8 +20,8 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
     router.push(`/details/${id}`);
   };
 
-  const handlerAddFavCrypto = (crypto: CryptoDetailsData) => {
-    AddCryptoToList(crypto);
+  const handlerAddFavCrypto = (/*crypto: CryptoDetailsData*/) => {
+    //AddCryptoToList(crypto);
   };
 
   return (
@@ -32,7 +32,7 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
       <td
         onClick={(e) => {
           e.stopPropagation();
-          handlerAddFavCrypto(data);
+          handlerAddFavCrypto(/*data*/);
         }}
       >
         click
