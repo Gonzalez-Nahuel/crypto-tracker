@@ -33,8 +33,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (err) {
-    let message = "Error Desconocido";
+    let message = "Internal server error";
     let status = 500;
+
+    console.log(err);
 
     if (err instanceof AuthError) {
       message = err.message;

@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       { status: 200 },
     );
   } catch (err: unknown) {
-    let message = "Error Desconocido";
+    let message = "Internal server error";
     let status = 500;
 
     if (err instanceof AuthError) {
