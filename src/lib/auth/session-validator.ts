@@ -7,8 +7,6 @@ export const SessionValidator = async () => {
   const accessToken = cookieStore.get("accesToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  console.log("iniciando session");
-
   if (!accessToken) {
     return await authRefresh(refreshToken);
   }

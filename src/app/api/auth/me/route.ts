@@ -6,8 +6,8 @@ export async function GET() {
 
   if (session.status === 401)
     throw NextResponse.json(
-      {},
-      { status: session.status, statusText: session.message }
+      {ok: false, message: "NO_SESSION"},
+      { status: session.status}
     );
 
   return NextResponse.json(session.payload, { status: 200 });

@@ -3,15 +3,15 @@ import { cookies } from "next/headers";
 import { GenerateTokens } from "../generate-tokens";
 
 export const authRefresh = async (refresh: string | undefined) => {
-  console.log("iniciando refresh");
+  
   if (refresh) {
-    console.log("intentando refresh");
+    
     try {
       const newPayload = jwt.verify(
         refresh,
         process.env.REFRESH_SECRET,
       ) as JwtPayload;
-      console.log(newPayload);
+  
 
       const cleanPayload = {
         email: newPayload.email,
@@ -34,8 +34,8 @@ export const authRefresh = async (refresh: string | undefined) => {
       });
 
       return { status: 200, payload: newPayload };
-    } catch (err) {
-      console.log("error en refresh:", err);
+    } catch (_) {
+      
       return { status: 401, message: "NO_SESSION" };
     }
   } else {
