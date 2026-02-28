@@ -44,7 +44,7 @@ export const NavBar = () => {
         >
           Tracker
         </h1>
-        <span>{`° ${user} °`}</span>
+        <span>{user ? `° ${user} °` : ""}</span>
       </div>
       <div className="flex justify-between gap-7 items-center">
         <button className="text-blue-400 hover:text-inherit cursor-pointer">

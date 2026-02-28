@@ -26,7 +26,7 @@ export const AuthForm = ({
   const [authMessage, setAuthMessage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
-  const handlerAuth = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handlerAuth = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const url = modeActive === "login" ? "/api/auth/login" : "/api/auth/signup";
@@ -60,7 +60,7 @@ export const AuthForm = ({
           <form
             onSubmit={handlerAuth}
             action=""
-            className="flex flex-col justify-between w-md  bg-card rounded-2xl h-[600px] p-6 no-scrollbar"
+            className="flex flex-col justify-between w-md  bg-card rounded-2xl h-150 p-6 no-scrollbar"
           >
             <ul className="flex justify-center gap-4 text-2xl font-bold">
               <li
@@ -113,6 +113,7 @@ export const AuthForm = ({
               <input
                 id="email"
                 name="email"
+                spellCheck={false}
                 type="email"
                 placeholder="Enter your address..."
                 className="bg-surface p-4 rounded-md border border-thin text-sm focus:outline-blue-400 focus:outline-2"
