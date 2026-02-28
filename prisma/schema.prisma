@@ -20,12 +20,14 @@ model User {
   email String @unique
   username String 
   password String
-  watchlist WatchList[]
+  watchlist Watchlist[]
 }
 
-model  WatchList {
+model  Watchlist {
   id Int @id @default(autoincrement())
   cryptoId String
   userId Int
   user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, cryptoId])
 }
