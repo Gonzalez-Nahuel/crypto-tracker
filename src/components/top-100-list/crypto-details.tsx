@@ -25,8 +25,8 @@ export const CryptoDetails = ({ id }: CryptoDetailsProps) => {
   const crypto = cryptoList.find((c: CryptoDetailsData) => c.id === id);
 
   return (
-    <main className="m-4 h-[700px] flex lg:items-center">
-      <div className="flex flex-col gap-24 lg:h-[600px] lg:flex-row lg:justify-between lg:max-w-[1400px] xl:mx-auto w-full">
+    <main className="m-4 h-175 flex lg:items-center">
+      <div className="flex flex-col gap-24 lg:h-150 lg:flex-row lg:justify-between lg:max-w-350 xl:mx-auto w-full">
         <section className="flex flex-col gap-10 lg:w-lg lg:justify-between">
           <PriceInfo data={crypto} />
           <div className="lg:hidden text-foreground px-2">

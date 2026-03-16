@@ -1,20 +1,19 @@
-/*"use server";
+"use server";
 
-import { prisma } from "@/lib/prisma";
 import { CryptoDetailsData } from "@/interfaces";
-import { cleanCryptoData } from "@/lib/clean-crypto-data";
-import { Prisma } from "@/generated/prisma";
+import { prisma } from "@/lib/bd/prisma";
+import { watchListDataMapper } from "@/lib/watchlist-data-mapper";
 
-export const AddCryptoToList = async (data: CryptoDetailsData) => {
+export const AddCryptoToWatchList = async (data: CryptoDetailsData) => {
   try {
-    const cleaned = cleanCryptoData(data) as Prisma.WatchListCreateInput;
+    const cleaned = await watchListDataMapper(data);
 
-    const crypto = await prisma.watchList.create({
+    const crypto = await prisma.watchlist.create({
       data: cleaned,
     });
 
-    console.log("Crypto añadida a la lista:", crypto);
+    return crypto;
   } catch (e) {
     console.error("error:", e);
   }
-};*/
+};

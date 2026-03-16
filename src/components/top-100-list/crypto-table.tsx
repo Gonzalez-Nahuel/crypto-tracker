@@ -5,14 +5,20 @@ import { CryptoList } from "./crypto-list";
 import { CryptoDetailsData } from "@/interfaces";
 import { useState } from "react";
 
-export const CryptoTable = () => {
+type CryptoTableProps = {
+  favList: Map<string, number> | undefined
+}
+
+export const CryptoTable = ({favList}: CryptoTableProps) => {
   const [isActive, setIsActive] = useState<boolean>(true);
 
-  const list = useAppSelector(
+  const cryptoApiResponse = useAppSelector(
     (state) => state.cryptoApi[COINGECKO_ENDPOINTS.top100]
   );
 
-  const details = list?.data ?? [];
+  const top100List = cryptoApiResponse?.data ?? [];
+
+  const result = top100List.map((c: CryptoDetailsData) => ({...c , favorite: favList?.has(c.id)}))
 
   const handlerIsActive = () => setIsActive(!isActive);
 
@@ -57,7 +63,7 @@ export const CryptoTable = () => {
         </colgroup>
         <thead>
           <tr className="border-b border-b-thin h-12">
-            <th></th>
+            <th className="text-start">Fav</th>
             <th>#</th>
             <th className="text-start">Name</th>
             <th className="text-end">Price</th>
@@ -71,7 +77,7 @@ export const CryptoTable = () => {
           </tr>
         </thead>
         <tbody>
-          {details!.map((data: CryptoDetailsData) => (
+          {result!.map((data: CryptoDetailsData) => (
             <CryptoList key={data.id} data={data} />
           ))}
         </tbody>

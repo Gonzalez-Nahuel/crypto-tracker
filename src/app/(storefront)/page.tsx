@@ -1,11 +1,14 @@
 import { MetricCardWrapper } from "@/components/metric-cards/metric-card-wrapper";
 import { CryptoTable } from "@/components/top-100-list/crypto-table";
+import { GetUserWatchList } from "@/lib/bd/get-user-watchlist";
 
-export default function Home() {
+export default async function Home() {
+  const userFavList = await GetUserWatchList();
+
   return (
     <main className="mx-4">
       <MetricCardWrapper />
-      <CryptoTable />
+      <CryptoTable favList={userFavList} />
     </main>
   );
 }

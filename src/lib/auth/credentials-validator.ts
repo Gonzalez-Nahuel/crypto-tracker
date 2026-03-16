@@ -1,7 +1,7 @@
 import { PrivateUser } from "@/interfaces";
 import bcrypt from "bcryptjs";
 import { AuthError } from "./auth-error";
-import { prisma } from "../prisma";
+import { prisma } from "../bd/prisma";
 
 export class CredentialsValidator {
   static validateUsername(username: string) {
@@ -12,7 +12,7 @@ export class CredentialsValidator {
     if (!isValid)
       throw new AuthError(
         "El nombre de usuario debe tener entre 3 y 20 caracteres y solo puede contener letras, números, guiones (-) y guiones bajos (_).",
-        422
+        422,
       );
   }
 
@@ -36,7 +36,7 @@ export class CredentialsValidator {
     if (!isValid)
       throw new AuthError(
         "La contraseña debe tener al menos 8 caracteres e incluir una letra mayúscula, una minúscula, un número y un símbolo.",
-        422
+        422,
       );
   }
 

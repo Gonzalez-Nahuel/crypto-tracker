@@ -7,21 +7,34 @@ import { ProgressIndicator } from "../shared/progress-indicator";
 import LineChart from "../shared/line-chart";
 import { useRouter } from "next/navigation";
 import { PriceVariation } from "../shared/price-variation";
-//import { AddCryptoToList } from "@/app/actions/watch-list/actions";
+import { AddCryptoToWatchList } from "@/app/actions/watch-list/actions";
+import { LoaderCircle, Star } from "lucide-react";
+import { useState } from "react";
 
 interface CryptoDetailsProps {
   data: CryptoDetailsData;
 }
 
 export const CryptoList = ({ data }: CryptoDetailsProps) => {
+  const [favorite, setFavorite] = useState(data.favorite);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handlerRoute = (id: string) => {
     router.push(`/details/${id}`);
   };
 
-  const handlerAddFavCrypto = (/*crypto: CryptoDetailsData*/) => {
-    //AddCryptoToList(crypto);
+  const handlerAddFavCrypto = async (crypto: CryptoDetailsData) => {
+    try {
+      setIsLoading(true);
+      setFavorite(true);
+      await AddCryptoToWatchList(crypto);
+      router.refresh();
+    } catch (_) {
+      setFavorite(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -32,10 +45,20 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
       <td
         onClick={(e) => {
           e.stopPropagation();
-          handlerAddFavCrypto(/*data*/);
+          handlerAddFavCrypto(data);
         }}
       >
-        click
+        {favorite ? (
+          isLoading ? (
+            <LoaderCircle className="animate-spin w-5 h-5" />
+          ) : (
+            <Star width={16} height={16} color="gold" fill="gold" />
+          )
+        ) : isLoading ? (
+          <LoaderCircle className="animate-spin w-5 h-5" />
+        ) : (
+          <Star width={16} height={16} color="gold" />
+        )}
       </td>
       <td className="text-center p-1.5">{data.market_cap_rank}</td>
       <td>
