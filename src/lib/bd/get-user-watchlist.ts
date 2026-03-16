@@ -5,18 +5,16 @@ export const GetUserWatchList = async () => {
   try {
     const userData = await SessionValidator();
 
-    console.log("userData:", userData);
+    const userId = Number(userData.payload?.sub);
 
     const userWatchList = await prisma.watchlist.findMany({
       where: {
-        userId: Number(userData.payload?.sub),
+        userId,
       },
     });
 
     const Fav = new Map(userWatchList.map((c) => [c.cryptoId, c.id]));
 
     return Fav;
-  } catch (e) {
-    console.log("error en catch getUSerWatch", e);
-  }
+  } catch (_) {}
 };
