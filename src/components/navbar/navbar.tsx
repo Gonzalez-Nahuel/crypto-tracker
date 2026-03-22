@@ -35,6 +35,8 @@ export const NavBar = () => {
     router.push("/");
   };
 
+  console.log(user);
+
   return (
     <header className="bg-surface relative p-2.5 border-b border-thin flex justify-between items-center ">
       <div className="px-4 flex justify-between gap-10 items-center">

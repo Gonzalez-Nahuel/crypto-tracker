@@ -2,12 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 type AuthState = {
   session: boolean;
+  id: number | null;
   email: string | null;
   username: string | null;
 };
 
 const initialState: AuthState = {
   session: false,
+  id: null,
   email: null,
   username: null,
 };
@@ -31,12 +33,19 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    setUser: (_, action) => ({
+      session: true,
+      id: action.payload.sub,
+      email: action.payload.email,
+      username: action.payload.username,
+    }),
     clearUser: () => initialState,
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMe.fulfilled, (_, action) => ({
         session: true,
+        id: action.payload.sub,
         email: action.payload.email,
         username: action.payload.username,
       }))
@@ -45,4 +54,4 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const { clearUser } = authSlice.actions;
+export const { clearUser, setUser } = authSlice.actions;

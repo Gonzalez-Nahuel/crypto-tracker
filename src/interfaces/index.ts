@@ -1,3 +1,5 @@
+import { JwtPayload } from "jsonwebtoken";
+
 export interface MarketCap {
   usd: number;
 }
@@ -55,3 +57,20 @@ export interface PublicUser {
   email: string;
   username: string;
 }
+
+export type TokenPayload = JwtPayload & {
+  email: string;
+  username: string;
+};
+
+type SuccessSession = {
+  status: 200;
+  payload: PublicUser;
+};
+
+type ErrorSession = {
+  status: 401;
+  message: string;
+};
+
+export type Session = SuccessSession | ErrorSession;

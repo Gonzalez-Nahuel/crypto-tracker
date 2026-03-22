@@ -5,7 +5,7 @@ export async function GET() {
   const session = await SessionValidator();
 
   if (session.status === 401)
-    throw NextResponse.json(
+    return NextResponse.json(
       { ok: false, message: "NO_SESSION" },
       { status: session.status },
     );
