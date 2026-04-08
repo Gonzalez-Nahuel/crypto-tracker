@@ -1,7 +1,7 @@
 import { GenerateTokens } from "@/lib/generate-tokens";
 import { CredentialsValidator } from "@/lib/auth/credentials-validator";
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/bd/prisma";
+import { prisma } from "@/lib/auth/prisma";
 import { cookies } from "next/headers";
 import { toPublicUser } from "@/lib/to-public-user";
 import { AuthError } from "@/lib/auth/auth-error";

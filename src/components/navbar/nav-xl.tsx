@@ -1,7 +1,6 @@
 import { useTheme } from "@/lib/hooks/useTheme";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { clearUser } from "@/redux/slices/auth-slice";
-import { useRouter } from "next/navigation";
+import { clearUser } from "@/redux/slices/session-slice";
 import { useEffect, useRef } from "react";
 
 type NavXLProps = {
@@ -12,9 +11,7 @@ type NavXLProps = {
 export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
   const currenNav = useRef<HTMLElement>(null);
 
-  const router = useRouter();
-
-  const session = useAppSelector((state) => state.auth.session);
+  const session = useAppSelector((state) => state.session.session);
   const theme = useAppSelector((state) => state.theme);
   const dispatch = useAppDispatch();
 
@@ -40,7 +37,7 @@ export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
     };
   }, [setIsActive]);
 
-  const handlerAuthMode = (mode: string) => {
+  const handleAuthMode = (mode: string) => {
     setAuthFormActive(mode);
   };
 
@@ -51,13 +48,11 @@ export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
     });
 
     dispatch(clearUser());
-
-    router.refresh();
   };
 
   return (
     <>
-      <div className=" absolute top-14 right-[9px] border-l-[16px] border-r-[16px] border-b-8 border-l-transparent border-r-transparent border-b-thin"></div>
+      <div className=" absolute top-14 right-2.25 border-l-16 border-r-16 border-b-8 border-l-transparent border-r-transparent border-b-thin"></div>
       <nav
         ref={currenNav}
         className="hidden absolute md:block w-72 h-44 bg-nav rounded-lg p-3.5 z-10 top-16 right-1 shadow-2xl border border-thin "
@@ -70,7 +65,7 @@ export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
                   <button
                     onClick={() => {
                       setIsActive(false);
-                      handlerAuthMode("login");
+                      handleAuthMode("login");
                     }}
                     className="py-2 px-4 font-extrabold border-2 bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer border-indigo-400  rounded-lg"
                   >
@@ -79,7 +74,7 @@ export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
                   <button
                     onClick={() => {
                       setIsActive(false);
-                      handlerAuthMode("signup");
+                      handleAuthMode("signup");
                     }}
                     className="py-2 px-4 font-semibold text-indigo-500 cursor-pointer hover:text-indigo-400 border-2 border-indigo-700 rounded-lg"
                   >

@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/redux/hooks";
-import { fetchMe } from "@/redux/slices/auth-slice";
+import { fetchMe } from "@/redux/slices/session-slice";
 import { useEffect } from "react";
 
 export const AuthBootstrap = () => {

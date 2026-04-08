@@ -74,3 +74,5 @@ type ErrorSession = {
 };
 
 export type Session = SuccessSession | ErrorSession;
+
+export type WatchlistType = [string, number];

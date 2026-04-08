@@ -16,7 +16,7 @@ export const NavBar = () => {
   const [isLoginSuccessOpen, setIsLoginSuccessOpen] = useState(false);
 
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.username);
+  const user = useAppSelector((state) => state.session.username);
   const router = useRouter();
 
   useEffect(() => {
@@ -34,8 +34,6 @@ export const NavBar = () => {
   const handleGoHome = () => {
     router.push("/");
   };
-
-  console.log(user);
 
   return (
     <header className="bg-surface relative p-2.5 border-b border-thin flex justify-between items-center ">

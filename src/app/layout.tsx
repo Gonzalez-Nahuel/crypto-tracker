@@ -3,6 +3,8 @@ import "./globals.css";
 import { ReduxProvider } from "@/redux/ReduxProvider";
 import { Inter } from "next/font/google";
 import { SessionValidator } from "@/lib/auth/session-validator";
+import { getUserWatchList } from "@/services/get-user-watchlist";
+import { WatchlistType } from "@/interfaces";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,6 +24,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await SessionValidator();
+  let userWatchlist: WatchlistType[] = [];
+
+  if (session.status === 200) {
+    userWatchlist = await getUserWatchList(session.payload.sub);
+  }
 
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
@@ -46,7 +53,9 @@ export default async function RootLayout({
         />
       </head>
       <body className={`antialiased`}>
-        <ReduxProvider session={session}>{children}</ReduxProvider>
+        <ReduxProvider session={session} watchlist={userWatchlist}>
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );

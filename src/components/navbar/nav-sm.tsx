@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
-import { clearUser } from "@/redux/slices/auth-slice";
+import { clearUser } from "@/redux/slices/session-slice";
 
 type NavSMProps = {
   isActive: boolean;
@@ -16,7 +16,7 @@ export const NavSM = ({
   setIsActive,
   setAuthFormActive,
 }: NavSMProps) => {
-  const session = useAppSelector((state) => state.auth.session);
+  const session = useAppSelector((state) => state.session.session);
   const theme = useAppSelector((state) => state.theme);
   const dispatch = useAppDispatch();
   const { changeTheme } = useTheme();
@@ -45,7 +45,7 @@ export const NavSM = ({
     document.body.classList.remove("overflow-hidden");
   };
 
-  const handlerAuthMode = (mode: string) => {
+  const handleAuthMode = (mode: string) => {
     setAuthFormActive(mode);
   };
 
@@ -56,8 +56,6 @@ export const NavSM = ({
     });
 
     dispatch(clearUser());
-
-    router.refresh();
   };
 
   const handleGoHome = () => {
@@ -83,13 +81,13 @@ export const NavSM = ({
           {!session ? (
             <>
               <button
-                onClick={() => handlerAuthMode("signup")}
+                onClick={() => handleAuthMode("signup")}
                 className="text-center font-extrabold text-white p-3 bg-indigo-600 rounded-md text-sm hover:bg-indigo-500 cursor-pointer"
               >
                 Create an Account
               </button>
               <button
-                onClick={() => handlerAuthMode("login")}
+                onClick={() => handleAuthMode("login")}
                 className="text-center text-white font-extrabold p-3 bg-indigo-600 rounded-md text-sm hover:bg-indigo-500 cursor-pointer"
               >
                 Log in

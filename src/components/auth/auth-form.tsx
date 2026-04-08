@@ -2,7 +2,7 @@
 
 import { authRequest } from "@/lib/auth/auth-request";
 import { useAppDispatch } from "@/redux/hooks";
-import { fetchMe } from "@/redux/slices/auth-slice";
+import { fetchMe } from "@/redux/slices/session-slice";
 import { X } from "lucide-react";
 import { useState } from "react";
 

@@ -3,19 +3,13 @@ import { COINGECKO_ENDPOINTS } from "@/constants";
 import { useAppSelector } from "@/redux/hooks";
 import { CryptoList } from "./crypto-list";
 import { CryptoDetailsData } from "@/interfaces";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-type CryptoTableProps = {
-  favList: Map<string, number> | undefined;
-};
-
-export const CryptoTable = ({ favList }: CryptoTableProps) => {
+export const CryptoTable = () => {
   const [isActive, setIsActive] = useState<boolean>(true);
-  const session = useAppSelector((store) => store.auth.session);
+  const watchlist = useAppSelector((store) => store.session.watchlist);
 
-  useEffect(() => {
-    return;
-  }, [session]);
+  const userFavList = new Map(watchlist);
 
   const cryptoApiResponse = useAppSelector(
     (state) => state.cryptoApi[COINGECKO_ENDPOINTS.top100],
@@ -25,7 +19,7 @@ export const CryptoTable = ({ favList }: CryptoTableProps) => {
 
   const result = top100List.map((c: CryptoDetailsData) => ({
     ...c,
-    favorite: favList?.has(c.id),
+    favorite: userFavList?.has(c.id),
   }));
 
   const handlerIsActive = () => setIsActive(!isActive);

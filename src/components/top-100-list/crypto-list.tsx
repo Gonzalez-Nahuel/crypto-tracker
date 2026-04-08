@@ -7,31 +7,51 @@ import { ProgressIndicator } from "../shared/progress-indicator";
 import LineChart from "../shared/line-chart";
 import { useRouter } from "next/navigation";
 import { PriceVariation } from "../shared/price-variation";
-import { AddCryptoToWatchList } from "@/app/actions/watch-list/actions";
+import {
+  AddCryptoToWatchlist,
+  DeleteCryptoToWatchlist,
+} from "@/app/actions/watch-list/actions";
 import { LoaderCircle, Star } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/redux/hooks";
+import { refreshWatchlist } from "@/redux/slices/session-slice";
 
 interface CryptoDetailsProps {
   data: CryptoDetailsData;
 }
 
 export const CryptoList = ({ data }: CryptoDetailsProps) => {
-  const [favorite, setFavorite] = useState(data.favorite);
+  const [optimisticFav, setOptimisticFav] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
   const router = useRouter();
+
+  useEffect(() => {
+    setOptimisticFav(null);
+  }, [data.favorite]);
+
+  const isFav = optimisticFav ?? data.favorite;
 
   const handlerRoute = (id: string) => {
     router.push(`/details/${id}`);
   };
 
-  const handlerAddFavCrypto = async (crypto: CryptoDetailsData) => {
+  const toggleFavCrypto = async (crypto: CryptoDetailsData) => {
+    const next = isFav;
+
     try {
       setIsLoading(true);
-      setFavorite(true);
-      await AddCryptoToWatchList(crypto);
-      router.refresh();
+
+      if (next) {
+        dispatch(refreshWatchlist(crypto.id));
+        setOptimisticFav(false);
+        await DeleteCryptoToWatchlist(crypto.id);
+      } else {
+        setOptimisticFav(true);
+        await AddCryptoToWatchlist(crypto);
+      }
     } catch (_) {
-      setFavorite(false);
+      setOptimisticFav(next);
     } finally {
       setIsLoading(false);
     }
@@ -45,10 +65,10 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
       <td
         onClick={(e) => {
           e.stopPropagation();
-          handlerAddFavCrypto(data);
+          toggleFavCrypto(data);
         }}
       >
-        {favorite ? (
+        {isFav ? (
           isLoading ? (
             <LoaderCircle className="animate-spin w-5 h-5" />
           ) : (

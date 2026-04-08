@@ -2,22 +2,22 @@
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store";
-//import { AuthBootstrap } from "@/components/auth/auth-boostrap";
-import { setUser } from "./slices/auth-slice";
-import { Session } from "@/interfaces";
+import { setUser } from "./slices/session-slice";
+import { Session, WatchlistType } from "@/interfaces";
 
 export const ReduxProvider = ({
   children,
   session,
+  watchlist,
 }: {
   children: React.ReactNode;
   session: Session;
+  watchlist: WatchlistType[];
 }) => {
-  const hasUser = store.getState().auth.session;
+  const hasUser = store.getState().session.session;
 
   if (session?.status === 200 && !hasUser) {
-    console.log("session");
-    store.dispatch(setUser(session.payload));
+    store.dispatch(setUser({ session: session.payload, watchlist }));
   }
 
   return (

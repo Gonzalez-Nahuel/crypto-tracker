@@ -1,7 +1,7 @@
 import { AuthError } from "@/lib/auth/auth-error";
 import { CredentialsValidator } from "@/lib/auth/credentials-validator";
 import { GenerateTokens } from "@/lib/generate-tokens";
-import { prisma } from "@/lib/bd/prisma";
+import { prisma } from "@/lib/auth/prisma";
 import { toPublicUser } from "@/lib/to-public-user";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
