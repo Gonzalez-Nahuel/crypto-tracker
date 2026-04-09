@@ -1,5 +1,5 @@
 import { getUserWatchList } from "@/lib/db/get-user-watchlist";
-import { SessionValidator } from "../../../../lib/auth/session-validator";
+import { SessionValidator } from "@/lib/auth/session-validator";
 import { NextResponse } from "next/server";
 
 export async function GET() {
