@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setTheme } from "@/redux/slices/theme-slice";
 import { useRouter } from "next/navigation";
 import { AuthForm } from "../auth/auth-form";
-import { LoginSuccess } from "../auth/login-succes";
+import { LoginSuccess } from "../auth/login-success";
 
 export const NavBar = () => {
   const [isActiveNavXL, setIsActiveNavXL] = useState(false);

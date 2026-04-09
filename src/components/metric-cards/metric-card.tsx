@@ -1,5 +1,5 @@
-import { StatWithCart } from "./stat-with-cart";
-import { StatWithVariation } from "./stat-with-variation.tsx";
+import { StatWithCart } from "./stat-with-chart";
+import { StatWithVariation } from "./stat-with-variation";
 
 type MetricCardProps = {
   value: string;

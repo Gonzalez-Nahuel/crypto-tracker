@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ReduxProvider } from "@/redux/ReduxProvider";
+import { ReduxProvider } from "@/redux/redux-provider";
 import { Inter } from "next/font/google";
 import { SessionValidator } from "@/lib/auth/session-validator";
-import { getUserWatchList } from "@/services/get-user-watchlist";
+import { getUserWatchList } from "@/lib/db/get-user-watchlist";
 import { WatchlistType } from "@/interfaces";
 
 const inter = Inter({

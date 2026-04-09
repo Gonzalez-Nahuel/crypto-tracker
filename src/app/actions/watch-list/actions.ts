@@ -1,9 +1,9 @@
 "use server";
 
 import { CryptoDetailsData } from "@/interfaces";
-import { prisma } from "@/lib/auth/prisma";
+import { prisma } from "@/lib/db/prisma";
 import { SessionValidator } from "@/lib/auth/session-validator";
-import { watchListDataMapper } from "@/lib/watchlist-data-mapper";
+import { watchListDataMapper } from "@/lib/mappers/watchlist-data-mapper";
 
 export const AddCryptoToWatchlist = async (data: CryptoDetailsData) => {
   try {
@@ -15,7 +15,7 @@ export const AddCryptoToWatchlist = async (data: CryptoDetailsData) => {
 
     return crypto;
   } catch (e) {
-    console.error("error:", e);
+    console.error("[AddCryptoToWatchlist]", e);
   }
 };
 
@@ -34,6 +34,6 @@ export const DeleteCryptoToWatchlist = async (id: string) => {
       },
     });
   } catch (e) {
-    console.log(e);
+    console.error("[DeleteCryptoToWatchlist]", e);
   }
 };

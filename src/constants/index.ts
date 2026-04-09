@@ -20,3 +20,9 @@ export const COINGECKO_ENDPOINTS = {
 export const CRYPTOCOMPARE_ENDPOINTS = {
   marketCapChart: "data/v2/histoday?fsym=BTC&tsym=USD&limit=150",
 };
+
+export const ALLOWED_DOMAINS = [
+  "api.coingecko.com",
+  "api.alternative.me",
+  "min-api.cryptocompare.com",
+];

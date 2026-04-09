@@ -1,14 +1,20 @@
 import { AuthError } from "@/lib/auth/auth-error";
 import { CredentialsValidator } from "@/lib/auth/credentials-validator";
-import { GenerateTokens } from "@/lib/generate-tokens";
-import { prisma } from "@/lib/auth/prisma";
-import { toPublicUser } from "@/lib/to-public-user";
+import { prisma } from "@/lib/db/prisma";
+import { toPublicUser } from "@/lib/mappers/to-public-user";
 import bcrypt from "bcryptjs";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { setAuthCookies } from "@/components/auth/set-auth-cookies";
 
 export async function POST(req: Request) {
   const { email, username, password } = await req.json();
+
+  if (!email || !password || !username) {
+    return NextResponse.json(
+      { ok: false, message: "Missing credentials" },
+      { status: 400 },
+    );
+  }
 
   try {
     await CredentialsValidator.validateEmail(email);
@@ -25,29 +31,16 @@ export async function POST(req: Request) {
       },
     });
 
-    const publicUser = toPublicUser(newUser!);
+    const publicUser = toPublicUser(newUser);
 
-    const accesToken = GenerateTokens.generateAccesToken(publicUser);
-    const refreshToken = GenerateTokens.generateRefreshToken(publicUser);
-
-    (await cookies()).set("accesToken", accesToken, {
-      httpOnly: true,
-      sameSite: "strict",
-      maxAge: 60 * 15,
-    });
-
-    (await cookies()).set("refreshToken", refreshToken, {
-      httpOnly: true,
-      sameSite: "strict",
-      maxAge: 60 * 60 * 24 * 7,
-    });
+    setAuthCookies(publicUser);
 
     return NextResponse.json(
       {
         ok: true,
         message: "Usuario creado",
       },
-      { status: 200 },
+      { status: 201 },
     );
   } catch (err: unknown) {
     let message = "Internal server error";
@@ -56,6 +49,8 @@ export async function POST(req: Request) {
     if (err instanceof AuthError) {
       message = err.message;
       status = err.status;
+    } else {
+      console.error("[POST /api/auth/signup]", err);
     }
 
     return NextResponse.json({ ok: false, message }, { status });

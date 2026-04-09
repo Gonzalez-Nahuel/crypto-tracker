@@ -1,7 +1,7 @@
 import { PrivateUser } from "@/interfaces";
 import bcrypt from "bcryptjs";
 import { AuthError } from "./auth-error";
-import { prisma } from "./prisma";
+import { prisma } from "../db/prisma";
 
 export class CredentialsValidator {
   static validateUsername(username: string) {
