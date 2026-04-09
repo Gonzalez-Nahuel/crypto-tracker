@@ -3,14 +3,14 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { GenerateTokens } from "@/lib/generate-tokens";
 
 export function proxy(req: NextRequest) {
-  const accesToken = req.cookies.get("accesToken")?.value;
+  const accessToken = req.cookies.get("accessToken")?.value;
   const refreshToken = req.cookies.get("refreshToken")?.value;
 
-  if (!accesToken && !refreshToken) return NextResponse.next();
+  if (!accessToken && !refreshToken) return NextResponse.next();
 
-  if (accesToken) {
+  if (accessToken) {
     try {
-      jwt.verify(accesToken!, process.env.ACCESS_SECRET);
+      jwt.verify(accessToken!, process.env.ACCESS_SECRET);
 
       return NextResponse.next();
     } catch (err: unknown) {
@@ -31,12 +31,12 @@ export function proxy(req: NextRequest) {
       username: newPayload.username,
     } as JwtPayload;
 
-    const newAccesToken = GenerateTokens.generateAccesToken(cleanPayload);
+    const newAccessToken = GenerateTokens.generateAccessToken(cleanPayload);
     const newRefreshToken = GenerateTokens.generateRefreshToken(cleanPayload);
 
     const res = NextResponse.next();
 
-    res.cookies.set("accesToken", newAccesToken, {
+    res.cookies.set("accessToken", newAccessToken, {
       httpOnly: true,
       sameSite: "strict",
       maxAge: 60 * 15,

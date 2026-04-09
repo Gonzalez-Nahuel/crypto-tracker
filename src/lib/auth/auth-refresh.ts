@@ -16,10 +16,10 @@ export const authRefresh = async (refresh: string | undefined) => {
         username: newPayload.username,
       } as JwtPayload;
 
-      const newAccesToken = GenerateTokens.generateAccesToken(cleanPayload);
+      const newAccessToken = GenerateTokens.generateAccessToken(cleanPayload);
       const newRefreshToken = GenerateTokens.generateRefreshToken(cleanPayload);
 
-      (await cookies()).set("accesToken", newAccesToken, {
+      (await cookies()).set("accessToken", newAccessToken, {
         httpOnly: true,
         sameSite: "strict",
         maxAge: 60 * 15,
