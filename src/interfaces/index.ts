@@ -75,4 +75,4 @@ type ErrorSession = {
 
 export type Session = SuccessSession | ErrorSession;
 
-export type WatchlistType = [string, number];
+export type WatchlistType = string;

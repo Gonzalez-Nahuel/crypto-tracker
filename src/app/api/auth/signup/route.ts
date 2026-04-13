@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db/prisma";
 import { toPublicUser } from "@/lib/mappers/to-public-user";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { setAuthCookies } from "@/components/auth/set-auth-cookies";
+import { setAuthCookies } from "@/lib/auth/set-auth-cookies";
 
 export async function POST(req: Request) {
   const { email, username, password } = await req.json();
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
     const publicUser = toPublicUser(newUser);
 
-    setAuthCookies(publicUser);
+    await setAuthCookies(publicUser);
 
     return NextResponse.json(
       {

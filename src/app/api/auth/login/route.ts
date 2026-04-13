@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { toPublicUser } from "@/lib/mappers/to-public-user";
 import { AuthError } from "@/lib/auth/auth-error";
-import { setAuthCookies } from "@/components/auth/set-auth-cookies";
+import { setAuthCookies } from "@/lib/auth/set-auth-cookies";
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     const publicUser = toPublicUser(user);
 
-    setAuthCookies(publicUser);
+    await setAuthCookies(publicUser);
 
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (err) {

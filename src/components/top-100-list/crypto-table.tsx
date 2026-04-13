@@ -7,9 +7,10 @@ import { useState } from "react";
 
 export const CryptoTable = () => {
   const [isActive, setIsActive] = useState<boolean>(true);
+  const session = useAppSelector((store) => store.session.session);
   const watchlist = useAppSelector((store) => store.session.watchlist);
 
-  const userFavList = new Map(watchlist);
+  const userFavList = new Set(watchlist);
 
   const cryptoApiResponse = useAppSelector(
     (state) => state.cryptoApi[COINGECKO_ENDPOINTS.top100],
@@ -22,32 +23,45 @@ export const CryptoTable = () => {
     favorite: userFavList?.has(c.id),
   }));
 
+  const myList = result.filter((data: CryptoDetailsData) => data.favorite);
+
   const handlerIsActive = () => setIsActive(!isActive);
 
   return (
     <section className=" my-6 overflow-auto">
       {/*<h2 className="text-2xl font-bold mb-2">Top</h2>*/}
       <ul className="text-2xl font-bold flex gap-8">
-        <li
-          onClick={handlerIsActive}
-          className={`${
-            isActive
-              ? "relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full"
-              : ""
-          } cursor-pointer p-4 `}
-        >
-          Top
-        </li>
-        <li
-          onClick={handlerIsActive}
-          className={`${
-            !isActive
-              ? "relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full"
-              : ""
-          } cursor-pointer p-4`}
-        >
-          My list
-        </li>
+        {session ? (
+          <>
+            <li
+              onClick={handlerIsActive}
+              className={`${
+                isActive
+                  ? "relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full"
+                  : ""
+              } cursor-pointer p-4 `}
+            >
+              Top
+            </li>
+            <li
+              onClick={handlerIsActive}
+              className={`${
+                !isActive
+                  ? "relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full"
+                  : ""
+              } cursor-pointer p-4`}
+            >
+              My list
+            </li>
+          </>
+        ) : (
+          <li
+            onClick={handlerIsActive}
+            className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full cursor-pointer p-4"
+          >
+            Top
+          </li>
+        )}
       </ul>
       <table className="border-t border-t-thin font-medium text-sm w-full">
         <colgroup>
@@ -79,9 +93,17 @@ export const CryptoTable = () => {
           </tr>
         </thead>
         <tbody>
-          {result!.map((data: CryptoDetailsData) => (
-            <CryptoList key={data.id} data={data} />
-          ))}
+          {session
+            ? isActive
+              ? result!.map((data: CryptoDetailsData) => (
+                  <CryptoList key={data.id} data={data} />
+                ))
+              : myList.map((data: CryptoDetailsData) => (
+                  <CryptoList key={data.id} data={data} />
+                ))
+            : result!.map((data: CryptoDetailsData) => (
+                <CryptoList key={data.id} data={data} />
+              ))}
         </tbody>
       </table>
     </section>

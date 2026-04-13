@@ -7,7 +7,7 @@ export const setAuthCookies = async (publicUser: PublicUser) => {
   const options = {
     httpOnly: true,
     sameSite: "strict" as const,
-    secure: process.env.NODE_ENV === "production",
+    //secure: process.env.NODE_ENV === "production",
   };
 
   const accessToken = GenerateTokens.generateAccessToken(publicUser);

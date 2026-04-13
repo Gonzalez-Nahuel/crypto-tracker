@@ -18,6 +18,7 @@ export const ReduxProvider = ({
 
   if (session?.status === 200 && !hasUser) {
     store.dispatch(setUser({ session: session.payload, watchlist }));
+    console.log(watchlist);
   }
 
   return (

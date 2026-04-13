@@ -10,6 +10,8 @@
   --theme-selector: #393939;
   --selected-theme: #2f2f2f;
   --thin: #4a5565;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
 }
 
 :root.light {
@@ -22,6 +24,8 @@
   --theme-selector: #e5e7eb;
   --selected-theme: white;
   --thin: #d1d5dc;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.35);
 }
 
 @theme {
@@ -35,13 +39,28 @@
   --color-selected-theme: var(--selected-theme);
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+:-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+* {
+  scrollbar-shadow-color: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
 input:-webkit-autofill,
@@ -51,6 +70,15 @@ input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0px 1000px var(--surface) inset !important;
   -webkit-text-fill-color: var(--foreground) !important;
   caret-color: var(--foreground) !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 body {

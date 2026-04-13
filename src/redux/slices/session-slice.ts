@@ -29,7 +29,7 @@ export const fetchMe = createAsyncThunk(
 
       const user = await res.json();
 
-      const watchlistRes = await fetch("/api/bd/watchlist");
+      const watchlistRes = await fetch("/api/watchlist");
       const watchlist = watchlistRes.ok ? await watchlistRes.json() : [];
 
       return { user, watchlist };
@@ -52,7 +52,11 @@ const sessionSlice = createSlice({
     }),
     clearUser: () => initialState,
     refreshWatchlist: (state, action) => {
-      state.watchlist = state.watchlist.filter(([id]) => id !== action.payload);
+      if (state.watchlist.includes(action.payload)) {
+        state.watchlist = state.watchlist.filter((id) => id !== action.payload);
+      } else {
+        state.watchlist.push(action.payload);
+      }
     },
   },
   extraReducers: (builder) => {

@@ -47,6 +47,7 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
         setOptimisticFav(false);
         await DeleteCryptoToWatchlist(crypto.id);
       } else {
+        dispatch(refreshWatchlist(crypto.id));
         setOptimisticFav(true);
         await AddCryptoToWatchlist(crypto);
       }
