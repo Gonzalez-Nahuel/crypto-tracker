@@ -16,6 +16,7 @@ export const AddCryptoToWatchlist = async (data: CryptoDetailsData) => {
     return crypto;
   } catch (e) {
     console.error("[AddCryptoToWatchlist]", e);
+    throw new Error("Error al agregar crypto");
   }
 };
 
@@ -35,5 +36,6 @@ export const DeleteCryptoToWatchlist = async (id: string) => {
     });
   } catch (e) {
     console.error("[DeleteCryptoToWatchlist]", e);
+    throw new Error("Error al eliminar crypto");
   }
 };

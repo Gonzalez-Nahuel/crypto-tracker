@@ -3,40 +3,66 @@ import { COINGECKO_ENDPOINTS } from "@/constants";
 import { useAppSelector } from "@/redux/hooks";
 import { CryptoList } from "./crypto-list";
 import { CryptoDetailsData } from "@/interfaces";
-import { useState } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import { CryptoTableSkeleton } from "./crypto-table-skeleton";
 
 export const CryptoTable = () => {
-  const [isActive, setIsActive] = useState<boolean>(true);
+  const [showSkeleton, setShowSkeleton] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [tab, setTab] = useState<"top" | "favorite">("top");
   const session = useAppSelector((store) => store.session.session);
   const watchlist = useAppSelector((store) => store.session.watchlist);
-
-  const userFavList = new Set(watchlist);
 
   const cryptoApiResponse = useAppSelector(
     (state) => state.cryptoApi[COINGECKO_ENDPOINTS.top100],
   );
 
-  const top100List = cryptoApiResponse?.data ?? [];
+  const isLoading = cryptoApiResponse?.loading || showSkeleton;
 
-  const result = top100List.map((c: CryptoDetailsData) => ({
-    ...c,
-    favorite: userFavList?.has(c.id),
-  }));
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (isPending) {
+      timeout = setTimeout(() => setShowSkeleton(true), 150);
+    } else {
+      setShowSkeleton(false);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isPending]);
+
+  const result = useMemo(() => {
+    const top100List = cryptoApiResponse?.data ?? [];
+    const userFavList = new Set(watchlist);
+
+    return top100List.map((c: CryptoDetailsData) => ({
+      ...c,
+      favorite: userFavList?.has(c.id),
+    }));
+  }, [cryptoApiResponse.data, watchlist]);
 
   const myList = result.filter((data: CryptoDetailsData) => data.favorite);
 
-  const handlerIsActive = () => setIsActive(!isActive);
+  const dataToRender =
+    session && watchlist.length > 0 && tab === "favorite" ? myList : result;
+
+  const changeTab = (newTab: "top" | "favorite") => {
+    startTransition(() => {
+      setTab(newTab);
+    });
+  };
 
   return (
     <section className=" my-6 overflow-auto">
-      {/*<h2 className="text-2xl font-bold mb-2">Top</h2>*/}
       <ul className="text-2xl font-bold flex gap-8">
-        {session ? (
+        {session && watchlist.length > 0 ? (
           <>
             <li
-              onClick={handlerIsActive}
+              onClick={() => changeTab("top")}
               className={`${
-                isActive
+                tab === "top"
                   ? "relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full"
                   : ""
               } cursor-pointer p-4 `}
@@ -44,9 +70,9 @@ export const CryptoTable = () => {
               Top
             </li>
             <li
-              onClick={handlerIsActive}
+              onClick={() => changeTab("favorite")}
               className={`${
-                !isActive
+                tab === "favorite"
                   ? "relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full"
                   : ""
               } cursor-pointer p-4`}
@@ -55,10 +81,7 @@ export const CryptoTable = () => {
             </li>
           </>
         ) : (
-          <li
-            onClick={handlerIsActive}
-            className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full cursor-pointer p-4"
-          >
+          <li className="relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-teal-400 after:rounded-full cursor-pointer p-4">
             Top
           </li>
         )}
@@ -68,8 +91,8 @@ export const CryptoTable = () => {
           <col />
           <col className="w-12" />
           <col className="w-80" />
-          <col className="max-w-34" />
-          <col className="max-w-34" />
+          <col className="w-36" />
+          <col className="w-auto" />
           <col className="max-w-34" />
           <col className="max-w-34" />
           <col className="max-w-56" />
@@ -83,27 +106,25 @@ export const CryptoTable = () => {
             <th>#</th>
             <th className="text-start">Name</th>
             <th className="text-end">Price</th>
-            <th className="text-end">1h %</th>
+            <th className="text-end hidden sm:table-cell">1h %</th>
             <th className="text-end">24h %</th>
-            <th className="text-end">7d %</th>
-            <th className="text-end">Market Cap</th>
-            <th className="text-end">Volume(24h)</th>
-            <th className="text-end">Circulating Supply</th>
+            <th className="text-end hidden md:table-cell">7d %</th>
+            <th className="text-end hidden lg:table-cell">Market Cap</th>
+            <th className="text-end hidden md:table-cell">Volume(24h)</th>
+            <th className="text-end hidden lg:table-cell">
+              Circulating Supply
+            </th>
             <th className="hidden xl:table-cell text-end">Last 7 Days</th>
           </tr>
         </thead>
         <tbody>
-          {session
-            ? isActive
-              ? result!.map((data: CryptoDetailsData) => (
-                  <CryptoList key={data.id} data={data} />
-                ))
-              : myList.map((data: CryptoDetailsData) => (
-                  <CryptoList key={data.id} data={data} />
-                ))
-            : result!.map((data: CryptoDetailsData) => (
-                <CryptoList key={data.id} data={data} />
-              ))}
+          {isLoading ? (
+            <CryptoTableSkeleton />
+          ) : (
+            dataToRender!.map((data: CryptoDetailsData) => (
+              <CryptoList key={data.id} data={data} />
+            ))
+          )}
         </tbody>
       </table>
     </section>

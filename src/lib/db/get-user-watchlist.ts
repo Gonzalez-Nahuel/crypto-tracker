@@ -9,8 +9,6 @@ export const getUserWatchList = async (id: number) => {
       },
     });
 
-    console.log(userWatchList);
-
     const list = userWatchList.map((c): WatchlistType => c.cryptoId);
 
     return list;

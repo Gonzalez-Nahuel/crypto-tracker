@@ -12,7 +12,7 @@ import {
   DeleteCryptoToWatchlist,
 } from "@/app/actions/watch-list/actions";
 import { LoaderCircle, Star } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { refreshWatchlist } from "@/redux/slices/session-slice";
 
@@ -21,38 +21,27 @@ interface CryptoDetailsProps {
 }
 
 export const CryptoList = ({ data }: CryptoDetailsProps) => {
-  const [optimisticFav, setOptimisticFav] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-
-  useEffect(() => {
-    setOptimisticFav(null);
-  }, [data.favorite]);
-
-  const isFav = optimisticFav ?? data.favorite;
 
   const handlerRoute = (id: string) => {
     router.push(`/details/${id}`);
   };
 
   const toggleFavCrypto = async (crypto: CryptoDetailsData) => {
-    const next = isFav;
+    setIsLoading(true);
+
+    dispatch(refreshWatchlist(crypto.id));
 
     try {
-      setIsLoading(true);
-
-      if (next) {
-        dispatch(refreshWatchlist(crypto.id));
-        setOptimisticFav(false);
+      if (crypto.favorite) {
         await DeleteCryptoToWatchlist(crypto.id);
       } else {
-        dispatch(refreshWatchlist(crypto.id));
-        setOptimisticFav(true);
         await AddCryptoToWatchlist(crypto);
       }
     } catch (_) {
-      setOptimisticFav(next);
+      dispatch(refreshWatchlist(crypto.id));
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +58,7 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
           toggleFavCrypto(data);
         }}
       >
-        {isFav ? (
+        {data.favorite ? (
           isLoading ? (
             <LoaderCircle className="animate-spin w-5 h-5" />
           ) : (
@@ -104,7 +93,7 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
           <span>{currencyFormatter(data.current_price)}</span>
         </div>
       </td>
-      <td className="text-end">
+      <td className="text-end hidden sm:table-cell">
         <PriceVariation
           variation={data.price_change_percentage_1h_in_currency}
         />
@@ -114,17 +103,17 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
           variation={data.price_change_percentage_24h_in_currency}
         />
       </td>
-      <td className="text-end">
+      <td className="text-end hidden md:table-cell">
         <PriceVariation
           variation={data.price_change_percentage_7d_in_currency}
         />
       </td>
-      <td>
+      <td className="hidden lg:table-cell">
         <div className="text-end ">
           <span>{currencyFormatter(data.market_cap)}</span>
         </div>
       </td>
-      <td className="text-end ">
+      <td className="text-end hidden md:table-cell">
         <div>
           <span>{currencyFormatter(data.total_volume)}</span>
         </div>
@@ -132,7 +121,7 @@ export const CryptoList = ({ data }: CryptoDetailsProps) => {
           {formatNumberAbbreviated(data.total_volume / data.current_price)}
         </div>
       </td>
-      <td className="text-end ">
+      <td className="text-end hidden lg:table-cell">
         <div className="flex flex-col items-end">
           <div className="mb-1">
             {formatNumberAbbreviated(data.circulating_supply)}
