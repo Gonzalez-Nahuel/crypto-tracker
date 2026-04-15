@@ -41,7 +41,7 @@ export const CryptoTable = () => {
       ...c,
       favorite: userFavList?.has(c.id),
     }));
-  }, [cryptoApiResponse.data, watchlist]);
+  }, [cryptoApiResponse, watchlist]);
 
   const myList = result.filter((data: CryptoDetailsData) => data.favorite);
 
