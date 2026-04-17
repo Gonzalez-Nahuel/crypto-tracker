@@ -55,7 +55,7 @@ export const CryptoTable = () => {
   };
 
   return (
-    <section className=" my-6 overflow-auto">
+    <section className=" my-6">
       <ul className="text-2xl font-bold flex gap-8">
         {session && watchlist.length > 0 ? (
           <>
