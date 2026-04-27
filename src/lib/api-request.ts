@@ -8,7 +8,7 @@ export async function apiRequest({ baseUrl, endpoint }: FetchParams) {
 
   try {
     const res = await fetch(
-      `/api/api-fetch?endpoint=${encodeURIComponent(fullUrl)}`
+      `/api/api-fetch?endpoint=${encodeURIComponent(fullUrl)}`,
     );
 
     const data = await res.json();
@@ -16,14 +16,14 @@ export async function apiRequest({ baseUrl, endpoint }: FetchParams) {
     if (!res.ok) {
       return {
         ok: false,
-        error: `${res.statusText}: try cliente 1` || "Ocurrio un error",
+        error: res.statusText || "Ocurrio un error",
       };
     }
 
     if (!data.ok) {
       return {
         ok: false,
-        error: `${data.error}: try cliente 2`,
+        error: data.error,
       };
     }
 
@@ -38,7 +38,7 @@ export async function apiRequest({ baseUrl, endpoint }: FetchParams) {
     return {
       ok: false,
       status: null,
-      error: `${message}: catch cliente`,
+      error: message,
     };
   }
 }

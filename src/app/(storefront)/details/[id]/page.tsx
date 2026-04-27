@@ -1,4 +1,4 @@
-import { CryptoDetails } from "@/components/top-100-list/crypto-details";
+import { CryptoDetails } from "@/components/top-100-crypto/crypto-details";
 
 type DetailsProps = {
   params: Promise<{ id: string }>;
