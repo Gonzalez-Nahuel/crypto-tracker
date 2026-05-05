@@ -1,8 +1,7 @@
 "use client";
 import { COINGECKO_ENDPOINTS } from "@/constants";
-import { CryptoDetailsData } from "@/interfaces";
+import { CryptoDetailsData, CryptoNewsType } from "@/interfaces";
 import { useAppSelector } from "@/redux/hooks";
-
 import { PriceInfo } from "./price-info";
 import LineChart from "../shared/line-chart";
 import { GridDetails } from "../shared/grid-details";
@@ -10,9 +9,10 @@ import { CryptoNews } from "../ui/crypto-news";
 
 type CryptoDetailsProps = {
   id: string;
+  news: CryptoNewsType[];
 };
 
-export const CryptoDetails = ({ id }: CryptoDetailsProps) => {
+export const CryptoDetails = ({ id, news }: CryptoDetailsProps) => {
   const top100 = useAppSelector(
     (state) => state.cryptoApi[COINGECKO_ENDPOINTS.top100],
   );

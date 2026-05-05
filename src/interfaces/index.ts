@@ -76,3 +76,13 @@ type ErrorSession = {
 export type Session = SuccessSession | ErrorSession;
 
 export type WatchlistType = string;
+
+export type CryptoNewsType = {
+  author: string;
+  title: string;
+  description: string;
+  urlToImage: string;
+  url: string;
+  publishedAt: string;
+  content: string;
+};

@@ -9,6 +9,7 @@ export const URL_APIS = {
   coingecko: "https://api.coingecko.com/api/v3/",
   alternativeMe: "https://api.alternative.me/fng/",
   cryptoCompare: "https://min-api.cryptocompare.com/",
+  cryptoNews: "https://newsapi.org/",
 };
 
 export const COINGECKO_ENDPOINTS = {
@@ -21,8 +22,13 @@ export const CRYPTOCOMPARE_ENDPOINTS = {
   marketCapChart: "data/v2/histoday?fsym=BTC&tsym=USD&limit=150",
 };
 
+export const CRYPTONEWS_ENDPOINTS = {
+  crypto: `v2/everything?q=bitcoin OR market OR Cryto&pageSize=10&page=2&apiKey=${process.env.NEWS_API_KEY}`,
+};
+
 export const ALLOWED_DOMAINS = [
   "api.coingecko.com",
   "api.alternative.me",
   "min-api.cryptocompare.com",
+  "newsapi.org",
 ];
