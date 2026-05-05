@@ -1,25 +1,19 @@
-import Image from "next/image";
+import { CryptoNewsType } from "@/interfaces";
+import { Article } from "../top-100-crypto/article";
 
-export const CryptoNews = () => {
+type CryptoNewsProps = {
+  news: CryptoNewsType[];
+};
+
+export const CryptoNews = ({ news }: CryptoNewsProps) => {
   return (
-    <div className="flex flex-col gap-10">
-      <h2>Crypto News</h2>
-      <Image
-        src={
-          "https://gizmodo.com/app/uploads/2026/04/g-love-crypto-theft-1200x675.jpg"
-        }
-        alt={"asdadasda"}
-        width={500}
-        height={400}
-        unoptimized
-      />
-      <h3>Otro Titulo</h3>
-      <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta nisi
-        aspernatur, maiores totam, nostrum distinctio non quidem laudantium
-        natus accusantium rem quaerat ratione quos nobis expedita. Dignissimos,
-        mollitia quo? In.
-      </p>
+    <div className="my-10">
+      <h2 className="font-extrabold text-3xl mb-8">Crypto News</h2>
+      <div className="flex flex-col gap-8">
+        {news.map((article) => (
+          <Article key={article.url} article={article} />
+        ))}
+      </div>
     </div>
   );
 };

@@ -26,9 +26,9 @@ export const CryptoDetails = ({ id }: CryptoDetailsProps) => {
   const crypto = cryptoList.find((c: CryptoDetailsData) => c.id === id);
 
   return (
-    <div className="mx-4 h-[calc(100vh-55px)] overflow-hidden">
+    <div className=" h-[calc(100vh-55px)] overflow-hidden">
       <div className="flex flex-col lg:flex-row h-full w-full">
-        <div className="flex flex-col overflow-y-auto gap-10 lg:w-80 lg:shrink-0 lg:pr-4 lg:h-full lg:overflow-hidden lg:justify-evenly lg:border-r lg:border-thin">
+        <div className="flex px-4 flex-col overflow-y-auto gap-10 lg:w-80 lg:shrink-0 lg:h-full lg:overflow-hidden lg:justify-evenly lg:border-r lg:border-thin">
           <PriceInfo data={crypto} />
           <div className="lg:hidden text-foreground px-2">
             <LineChart
@@ -45,15 +45,12 @@ export const CryptoDetails = ({ id }: CryptoDetailsProps) => {
             <GridDetails data={crypto} />
           </div>
           <section className="lg:hidden">
-            <CryptoNews />
+            <CryptoNews news={news} />
           </section>
         </div>
-        <div className="hidden lg:flex lg:overflow-y-auto lg:h-full lg:flex-col lg:gap-12 lg:min-w-0 lg:flex-1 lg:py-8 xl:flex-row xl:gap-4 xl:p-0">
-          {/*<div className="lg:hidden">
-            <GridDetails data={crypto} />
-          </div>*/}
-          <div className="hidden lg:block flex-1 xl:flex xl:items-center xl:min-w-0">
-            <div className="w-full px-4">
+        <div className="hidden lg:flex lg:overflow-y-auto lg:h-full lg:flex-col lg:gap-12 lg:min-w-0 lg:flex-1 lg:py-8 xl:flex-row xl:gap-0 xl:p-0 xl:overflow-hidden">
+          <div className="hidden px-4 lg:block flex-1 xl:flex xl:items-center xl:min-w-0">
+            <div className="w-full">
               <LineChart
                 value={crypto.price_change_percentage_7d_in_currency}
                 data={crypto.sparkline_in_7d.price}
@@ -65,8 +62,8 @@ export const CryptoDetails = ({ id }: CryptoDetailsProps) => {
               />
             </div>
           </div>
-          <section className="xl:w-80 xl:shrink-0 xl:border-l xl:border-thin pl-4 py-4 h-full">
-            <CryptoNews />
+          <section className="xl:w-80 xl:shrink-0 xl:border-l xl:border-thin px-4 py-4 h-full xl:pt-8 xl:overflow-auto">
+            <CryptoNews news={news} />
           </section>
         </div>
       </div>
