@@ -1,4 +1,6 @@
 import { CryptoDetails } from "@/components/top-100-crypto/crypto-details";
+import { URL_APIS } from "@/constants";
+import { apiRequest } from "@/lib/api-request";
 
 type DetailsProps = {
   params: Promise<{ id: string }>;
@@ -7,5 +9,16 @@ type DetailsProps = {
 export default async function Details({ params }: DetailsProps) {
   const { id } = await params;
 
-  return <CryptoDetails id={id} />;
+  let news = [];
+
+  const page = Math.floor(Math.random() * 3 + 1);
+
+  const baseUrl = URL_APIS.cryptoNews;
+  const endpoint = `v2/everything?q=${id} AND crypto&pageSize=10&page=${page}&apiKey=${process.env.NEWS_API_KEY}`;
+
+  const cryptoNewsResponse = await apiRequest({ baseUrl, endpoint });
+
+  if (cryptoNewsResponse.ok) news = cryptoNewsResponse.data.articles;
+
+  return <CryptoDetails id={id} news={news} />;
 }
