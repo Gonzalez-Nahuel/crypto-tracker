@@ -22,10 +22,6 @@ export const CRYPTOCOMPARE_ENDPOINTS = {
   marketCapChart: "data/v2/histoday?fsym=BTC&tsym=USD&limit=150",
 };
 
-export const CRYPTONEWS_ENDPOINTS = {
-  crypto: `v2/everything?q=bitcoin OR market OR Cryto&pageSize=10&page=2&apiKey=${process.env.NEWS_API_KEY}`,
-};
-
 export const ALLOWED_DOMAINS = [
   "api.coingecko.com",
   "api.alternative.me",
