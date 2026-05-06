@@ -1,17 +1,21 @@
 "use client";
 import { COINGECKO_ENDPOINTS } from "@/constants";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { CryptoList } from "./crypto-list";
 import { CryptoDetailsData } from "@/interfaces";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { CryptoTableSkeleton } from "./crypto-table-skeleton";
+import { openAuthModal } from "@/redux/slices/auth-modal-slice";
 
 export const CryptoTable = () => {
   const [showSkeleton, setShowSkeleton] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [tab, setTab] = useState<"top" | "favorite">("top");
   const session = useAppSelector((store) => store.session.session);
   const watchlist = useAppSelector((store) => store.session.watchlist);
+
+  const dispatch = useAppDispatch();
 
   const cryptoApiResponse = useAppSelector(
     (state) => state.cryptoApi[COINGECKO_ENDPOINTS.top100],
@@ -86,6 +90,34 @@ export const CryptoTable = () => {
           </li>
         )}
       </ul>
+      {showLoginPrompt && (
+        <div className="fixed z-50 top-1/2  left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%]  max-w-md bg-card text-foreground border border-thin rounded-2xl shadow-xl p-4 animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2 font-semibold text-sm">
+              <span className="text-green-500">✔</span>
+              Add to your Watchlist?
+            </div>
+            <button
+              onClick={() => setShowLoginPrompt(false)}
+              className="text-muted-foreground hover:text-foreground transition"
+            >
+              ✕
+            </button>
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Sign up in just a few easy steps.
+          </p>
+          <button
+            onClick={() => {
+              dispatch(openAuthModal("signup"));
+              setShowLoginPrompt(false);
+            }}
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-medium transition cursor-pointer"
+          >
+            Create an account
+          </button>
+        </div>
+      )}
       <table className="border-t border-t-thin font-medium text-sm w-full">
         <colgroup>
           <col />
@@ -122,7 +154,11 @@ export const CryptoTable = () => {
             <CryptoTableSkeleton />
           ) : (
             dataToRender!.map((data: CryptoDetailsData) => (
-              <CryptoList key={data.id} data={data} />
+              <CryptoList
+                key={data.id}
+                data={data}
+                setShowLoginPrompt={setShowLoginPrompt}
+              />
             ))
           )}
         </tbody>

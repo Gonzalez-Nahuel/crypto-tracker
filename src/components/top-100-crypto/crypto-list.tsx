@@ -12,24 +12,34 @@ import {
   DeleteCryptoToWatchlist,
 } from "@/app/actions/watch-list/actions";
 import { LoaderCircle, Star } from "lucide-react";
-import { useState } from "react";
-import { useAppDispatch } from "@/redux/hooks";
+import React, { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { refreshWatchlist } from "@/redux/slices/session-slice";
 
 interface CryptoDetailsProps {
   data: CryptoDetailsData;
+  setShowLoginPrompt: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const CryptoList = ({ data }: CryptoDetailsProps) => {
+export const CryptoList = ({
+  data,
+  setShowLoginPrompt,
+}: CryptoDetailsProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const session = useAppSelector((state) => state.session.session);
 
   const handlerRoute = (id: string) => {
     router.push(`/details/${id}`);
   };
 
   const toggleFavCrypto = async (crypto: CryptoDetailsData) => {
+    if (!session) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
     setIsLoading(true);
 
     dispatch(refreshWatchlist(crypto.id));
