@@ -1,26 +1,24 @@
 "use client";
 
 import { authRequest } from "@/lib/auth/auth-request";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { closeAuthModal } from "@/redux/slices/auth-modal-slice";
 import { fetchMe } from "@/redux/slices/session-slice";
 import { X } from "lucide-react";
 import { useState } from "react";
 
 type AuthFormProps = {
-  mode: string | boolean;
-  setAuthFormActive: React.Dispatch<React.SetStateAction<boolean | string>>;
   setIsActiveNavXl: React.Dispatch<React.SetStateAction<boolean>>;
   setIsActiveNavXs: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLoginSuccessOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const AuthForm = ({
-  mode,
-  setAuthFormActive,
   setIsActiveNavXl,
   setIsActiveNavXs,
   setIsLoginSuccessOpen,
 }: AuthFormProps) => {
+  const { mode } = useAppSelector((state) => state.authModal);
   const [modeActive, setModeActive] = useState(mode);
   const [isAuthMessage, setIsAuthMessage] = useState(false);
   const [authMessage, setAuthMessage] = useState<string | null>(null);
@@ -45,7 +43,7 @@ export const AuthForm = ({
     setIsAuthMessage(false);
     setIsActiveNavXl(false);
     setIsActiveNavXs(false);
-    setAuthFormActive(false);
+    dispatch(closeAuthModal());
     setIsLoginSuccessOpen(true);
   };
 
@@ -53,7 +51,7 @@ export const AuthForm = ({
     <div className="fixed flex justify-center items-center inset-0 bg-black/30 z-30 no-scrollbar">
       <div className="relative rounded-2xl max-h-[90vh] overflow-hidden">
         <X
-          onClick={() => setAuthFormActive(false)}
+          onClick={() => dispatch(closeAuthModal())}
           className="absolute right-5 top-5 cursor-pointer"
         />
         <div className="max-h-[90vh] overflow-y-auto no-scrollbar ">

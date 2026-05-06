@@ -1,14 +1,14 @@
 import { useTheme } from "@/lib/hooks/useTheme";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { openAuthModal } from "@/redux/slices/auth-modal-slice";
 import { clearUser } from "@/redux/slices/session-slice";
 import { useEffect, useRef } from "react";
 
 type NavXLProps = {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
-  setAuthFormActive: React.Dispatch<React.SetStateAction<boolean | string>>;
 };
 
-export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
+export const NavXl = ({ setIsActive }: NavXLProps) => {
   const currenNav = useRef<HTMLElement>(null);
 
   const session = useAppSelector((state) => state.session.session);
@@ -38,7 +38,7 @@ export const NavXl = ({ setIsActive, setAuthFormActive }: NavXLProps) => {
   }, [setIsActive]);
 
   const handleAuthMode = (mode: string) => {
-    setAuthFormActive(mode);
+    dispatch(openAuthModal(mode));
   };
 
   const handleLogout = async () => {

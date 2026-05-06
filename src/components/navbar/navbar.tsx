@@ -12,12 +12,13 @@ import { LoginSuccess } from "../auth/login-success";
 export const NavBar = () => {
   const [isActiveNavXL, setIsActiveNavXL] = useState(false);
   const [isActiveNavXS, setIsActiveNavXS] = useState(false);
-  const [authFormActive, setAuthFormActive] = useState<boolean | string>(false);
+  //const [authFormActive, setAuthFormActive] = useState<boolean | string>(false);
   const [isLoginSuccessOpen, setIsLoginSuccessOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.session.username);
   const router = useRouter();
+  const { isOpen } = useAppSelector((state) => state.authModal);
 
   useEffect(() => {
     const storagedTheme = localStorage.getItem("theme-tracker");
@@ -63,23 +64,12 @@ export const NavBar = () => {
           <Menu />
         </button>
       </div>
-      {isActiveNavXL && (
-        <NavXl
-          setIsActive={setIsActiveNavXL}
-          setAuthFormActive={setAuthFormActive}
-        />
-      )}
+      {isActiveNavXL && <NavXl setIsActive={setIsActiveNavXL} />}
       {isActiveNavXS && (
-        <NavSM
-          isActive={isActiveNavXS}
-          setIsActive={setIsActiveNavXS}
-          setAuthFormActive={setAuthFormActive}
-        />
+        <NavSM isActive={isActiveNavXS} setIsActive={setIsActiveNavXS} />
       )}
-      {authFormActive && (
+      {isOpen && (
         <AuthForm
-          mode={authFormActive}
-          setAuthFormActive={setAuthFormActive}
           setIsActiveNavXl={setIsActiveNavXL}
           setIsActiveNavXs={setIsActiveNavXS}
           setIsLoginSuccessOpen={setIsLoginSuccessOpen}
