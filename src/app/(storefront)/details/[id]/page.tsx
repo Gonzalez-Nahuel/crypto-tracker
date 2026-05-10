@@ -11,10 +11,10 @@ export default async function Details({ params }: DetailsProps) {
 
   let news = [];
 
-  const page = Math.floor(Math.random() * 3 + 1);
+  const page = Math.floor(Math.random() * 5 + 1);
 
   const baseUrl = URL_APIS.cryptoNews;
-  const endpoint = `v2/everything?q=${id} AND crypto&pageSize=10&page=${page}&apiKey=${process.env.NEWS_API_KEY}`;
+  const endpoint = `v2/everything?q=bitcoin AND crypto&pageSize=10&page=${page}&apiKey=${process.env.NEWS_API_KEY}`;
 
   const cryptoNewsResponse = await apiRequest({ baseUrl, endpoint });
 
