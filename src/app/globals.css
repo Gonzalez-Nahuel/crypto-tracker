@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 
 :root.dark {
   --background: rgb(26, 26, 26);
@@ -12,6 +13,10 @@
   --thin: #4a5565;
   --scrollbar-thumb: rgba(255, 255, 255, 0.2);
   --scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
+  --hover-bg: #374151;
+  --search-modal-item-bg: #343434;
+  --search-modal-item-bg-hover: #052f4a;
+  --search-modal-item-border-hover: #1e4fa3;
 }
 
 :root.light {
@@ -26,6 +31,10 @@
   --thin: #d1d5dc;
   --scrollbar-thumb: rgba(0, 0, 0, 0.2);
   --scrollbar-thumb-hover: rgba(0, 0, 0, 0.35);
+  --hover-bg: #e5e7eb;
+  --search-modal-item-bg: #f3f4f6;
+  --search-modal-item-bg-hover: #dff2fe;
+  --search-modal-item-border-hover: #0061e7;
 }
 
 @theme {
@@ -37,6 +46,10 @@
   --color-nav: var(--nav);
   --color-theme-selector: var(--theme-selector);
   --color-selected-theme: var(--selected-theme);
+  --color-hover-bg: var(--hover-bg);
+  --color-search-modal-item-bg: var(--search-modal-item-bg);
+  --color-search-modal-item-bg-hover: var(--search-modal-item-bg-hover);
+  --color-search-modal-item-border-hover: var(--search-modal-item-border-hover);
 }
 
 :-webkit-scrollbar {

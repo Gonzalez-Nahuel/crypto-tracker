@@ -8,12 +8,13 @@ import { setTheme } from "@/redux/slices/theme-slice";
 import { useRouter } from "next/navigation";
 import { AuthForm } from "../auth/auth-form";
 import { LoginSuccess } from "../auth/login-success";
+import { SearchModal } from "./search-modal";
 
 export const NavBar = () => {
   const [isActiveNavXL, setIsActiveNavXL] = useState(false);
   const [isActiveNavXS, setIsActiveNavXS] = useState(false);
-  //const [authFormActive, setAuthFormActive] = useState<boolean | string>(false);
   const [isLoginSuccessOpen, setIsLoginSuccessOpen] = useState(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.session.username);
@@ -48,7 +49,10 @@ export const NavBar = () => {
         <span>{user ? `° ${user} °` : ""}</span>
       </div>
       <div className="flex justify-between gap-7 items-center">
-        <button className="text-blue-400 hover:text-inherit cursor-pointer">
+        <button
+          onClick={() => setIsSearchModalOpen((prev) => !prev)}
+          className="text-blue-400 hover:text-inherit cursor-pointer"
+        >
           <Search size={21} />
         </button>
         <button
@@ -64,6 +68,9 @@ export const NavBar = () => {
           <Menu />
         </button>
       </div>
+      {isSearchModalOpen && (
+        <SearchModal setIsSearchModalOpen={setIsSearchModalOpen} />
+      )}
       {isActiveNavXL && <NavXl setIsActive={setIsActiveNavXL} />}
       {isActiveNavXS && (
         <NavSM isActive={isActiveNavXS} setIsActive={setIsActiveNavXS} />
