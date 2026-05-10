@@ -60,7 +60,7 @@ export const CryptoList = ({
   return (
     <tr
       onClick={() => handlerRoute(data.id)}
-      className="border-b border-b-thin h-12 cursor-pointer"
+      className="border-b border-b-thin h-12 cursor-pointer hover:bg-crypto-list-item-bg-hover"
     >
       <td
         onClick={(e) => {

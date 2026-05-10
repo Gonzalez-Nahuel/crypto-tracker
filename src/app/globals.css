@@ -17,6 +17,7 @@
   --search-modal-item-bg: #343434;
   --search-modal-item-bg-hover: #052f4a;
   --search-modal-item-border-hover: #1e4fa3;
+  --crypto-list-item-bg-hover: #1e2939;
 }
 
 :root.light {
@@ -35,6 +36,7 @@
   --search-modal-item-bg: #f3f4f6;
   --search-modal-item-bg-hover: #dff2fe;
   --search-modal-item-border-hover: #0061e7;
+  --crypto-list-item-bg-hover: #f3f4f6;
 }
 
 @theme {
@@ -50,6 +52,7 @@
   --color-search-modal-item-bg: var(--search-modal-item-bg);
   --color-search-modal-item-bg-hover: var(--search-modal-item-bg-hover);
   --color-search-modal-item-border-hover: var(--search-modal-item-border-hover);
+  --color-crypto-list-item-bg-hover: var(--crypto-list-item-bg-hover);
 }
 
 :-webkit-scrollbar {

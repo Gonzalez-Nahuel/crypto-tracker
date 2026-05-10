@@ -45,6 +45,7 @@ export const SearchModal = ({ setIsSearchModalOpen }: SearchModalProps) => {
             id="search"
             name="search"
             type="text"
+            autoComplete="off"
             placeholder="What are you looking for?"
             className=" flex-1 focus:outline-none"
           />
