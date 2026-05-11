@@ -38,6 +38,8 @@ export async function POST(req: Request) {
       console.error("[POST /api/auth/login]", err);
     }
 
+    console.log("error login", err);
+
     return NextResponse.json({ ok: false, message }, { status });
   }
 }

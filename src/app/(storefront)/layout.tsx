@@ -12,7 +12,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col select-none">
       <NavBar />
       <main className="flex-1">{children}</main>
     </div>
