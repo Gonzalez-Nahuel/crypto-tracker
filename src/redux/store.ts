@@ -2,7 +2,7 @@ import storage from "redux-persist/lib/storage";
 import cryptoApi from "./slices/crypto-slice";
 import theme from "./slices/theme-slice";
 import session from "./slices/session-slice";
-import authModal from "./slices/auth-modal-slice";
+import authModal from "./slices/auth-form-slice";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
   persistStore,

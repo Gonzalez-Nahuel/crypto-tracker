@@ -20,7 +20,18 @@ model User {
   email String @unique
   username String 
   password String
+  emailVerifyed Boolean @default(false)
   watchlist Watchlist[]
+  verificationToken VerificationToken[]
+}
+
+model VerificationToken {
+  id String @id @default(cuid())
+  token String @unique
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiredAt DateTime
+  createdAt DateTime @default(now())
 }
 
 model  Watchlist {

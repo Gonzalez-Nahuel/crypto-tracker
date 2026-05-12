@@ -4,7 +4,7 @@ import { useTheme } from "@/lib/hooks/useTheme";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { clearUser } from "@/redux/slices/session-slice";
-import { openAuthModal } from "@/redux/slices/auth-modal-slice";
+import { openAuthForm } from "@/redux/slices/auth-form-slice";
 
 type NavSMProps = {
   isActive: boolean;
@@ -42,7 +42,7 @@ export const NavSM = ({ isActive, setIsActive }: NavSMProps) => {
   };
 
   const handleAuthMode = (mode: string) => {
-    dispatch(openAuthModal(mode));
+    dispatch(openAuthForm(mode));
   };
 
   const handleLogout = async () => {

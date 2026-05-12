@@ -4,6 +4,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store";
 import { setUser } from "./slices/session-slice";
 import { Session, WatchlistType } from "@/interfaces";
+import { useEffect } from "react";
 
 export const ReduxProvider = ({
   children,
@@ -14,11 +15,13 @@ export const ReduxProvider = ({
   session: Session;
   watchlist: WatchlistType[];
 }) => {
-  const hasUser = store.getState().session.session;
+  useEffect(() => {
+    const hasUser = store.getState().session.session;
 
-  if (session?.status === 200 && !hasUser) {
-    store.dispatch(setUser({ session: session.payload, watchlist }));
-  }
+    if (session?.status === 200 && !hasUser) {
+      store.dispatch(setUser({ session: session.payload, watchlist }));
+    }
+  }, [watchlist, session]);
 
   return (
     <Provider store={store}>

@@ -7,17 +7,20 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setTheme } from "@/redux/slices/theme-slice";
 import { useRouter } from "next/navigation";
 import { AuthForm } from "../auth/auth-form";
-import { LoginSuccess } from "../auth/login-success";
+import { AuthModal } from "../auth/auth-modal";
 import { SearchModal } from "./search-modal";
 
 export const NavBar = () => {
   const [isActiveNavXL, setIsActiveNavXL] = useState(false);
   const [isActiveNavXS, setIsActiveNavXS] = useState(false);
-  const [isLoginSuccessOpen, setIsLoginSuccessOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [textModal, setTextModal] = useState("");
+  const [titleModal, setTitleModal] = useState("");
+  const [typeModal, setTypeModal] = useState("");
 
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.session.username);
+  const user = useAppSelector((state) => state.session.username); //W34lkjauhw#
   const router = useRouter();
   const { isOpen } = useAppSelector((state) => state.authModal);
 
@@ -79,10 +82,20 @@ export const NavBar = () => {
         <AuthForm
           setIsActiveNavXl={setIsActiveNavXL}
           setIsActiveNavXs={setIsActiveNavXS}
-          setIsLoginSuccessOpen={setIsLoginSuccessOpen}
+          setIsAuthModalOpen={setIsAuthModalOpen}
+          setTitle={setTitleModal}
+          setText={setTextModal}
+          setType={setTypeModal}
         />
       )}
-      {isLoginSuccessOpen && <LoginSuccess isActive={setIsLoginSuccessOpen} />}
+      {isAuthModalOpen && (
+        <AuthModal
+          isActive={setIsAuthModalOpen}
+          title={titleModal}
+          text={textModal}
+          type={typeModal}
+        />
+      )}
     </header>
   );
 };

@@ -5,7 +5,7 @@ import { CryptoList } from "./crypto-list";
 import { CryptoDetailsData } from "@/interfaces";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { CryptoTableSkeleton } from "./crypto-table-skeleton";
-import { openAuthModal } from "@/redux/slices/auth-modal-slice";
+import { openAuthForm } from "@/redux/slices/auth-form-slice";
 
 export const CryptoTable = () => {
   const [showSkeleton, setShowSkeleton] = useState(false);
@@ -109,7 +109,7 @@ export const CryptoTable = () => {
           </p>
           <button
             onClick={() => {
-              dispatch(openAuthModal("signup"));
+              dispatch(openAuthForm("signup"));
               setShowLoginPrompt(false);
             }}
             className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-medium transition cursor-pointer"

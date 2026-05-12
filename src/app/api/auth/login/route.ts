@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db/prisma";
 import { toPublicUser } from "@/lib/mappers/to-public-user";
 import { AuthError } from "@/lib/auth/auth-error";
 import { setAuthCookies } from "@/lib/auth/set-auth-cookies";
+import { createVericaficationToken } from "@/lib/auth/create-verification-token";
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
@@ -18,9 +19,35 @@ export async function POST(req: Request) {
   try {
     const user = await prisma.user.findUnique({ where: { email } });
 
+    if (!user)
+      return NextResponse.json(
+        { ok: false, message: "Invalid credentials" },
+        { status: 401 },
+      );
+
     await CredentialsValidator.validateUser(user, password);
 
-    if (!user) throw new AuthError("Invalid credentials", 401);
+    const verificationToken = await prisma.verificationToken.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!user.emailVerifyed) {
+      if (!verificationToken || verificationToken.expiredAt < new Date()) {
+        await createVericaficationToken({
+          id: user.id,
+          email: user.email,
+          token: verificationToken?.token,
+        });
+      }
+
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "Please check your email to verify your account",
+        },
+        { status: 403 },
+      );
+    }
 
     const publicUser = toPublicUser(user);
 

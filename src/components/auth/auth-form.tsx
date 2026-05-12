@@ -2,7 +2,7 @@
 
 import { authRequest } from "@/lib/auth/auth-request";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { closeAuthModal } from "@/redux/slices/auth-modal-slice";
+import { closeAuthForm, setMode } from "@/redux/slices/auth-form-slice";
 import { fetchMe } from "@/redux/slices/session-slice";
 import { X } from "lucide-react";
 import { useState } from "react";
@@ -10,16 +10,21 @@ import { useState } from "react";
 type AuthFormProps = {
   setIsActiveNavXl: React.Dispatch<React.SetStateAction<boolean>>;
   setIsActiveNavXs: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsLoginSuccessOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+  setType: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const AuthForm = ({
   setIsActiveNavXl,
   setIsActiveNavXs,
-  setIsLoginSuccessOpen,
+  setIsAuthModalOpen,
+  setTitle,
+  setText,
+  setType,
 }: AuthFormProps) => {
   const { mode } = useAppSelector((state) => state.authModal);
-  const [modeActive, setModeActive] = useState(mode);
   const [isAuthMessage, setIsAuthMessage] = useState(false);
   const [authMessage, setAuthMessage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
@@ -27,7 +32,7 @@ export const AuthForm = ({
   const handlerAuth = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const url = modeActive === "login" ? "/api/auth/login" : "/api/auth/signup";
+    const url = mode === "login" ? "/api/auth/login" : "/api/auth/signup";
 
     const form = new FormData(e.currentTarget);
 
@@ -39,19 +44,32 @@ export const AuthForm = ({
       return;
     }
 
-    await dispatch(fetchMe());
+    if (mode === "login") {
+      await dispatch(fetchMe());
+
+      setText("You successfully logged in");
+      setType("success");
+      setIsAuthModalOpen(true);
+
+      dispatch(closeAuthForm());
+    } else {
+      setTitle("Verify your account");
+      setText("we have sent a verfication email to your inbox!");
+      setType("verification");
+      setIsAuthModalOpen(true);
+      dispatch(setMode("login"));
+    }
+
     setIsAuthMessage(false);
     setIsActiveNavXl(false);
     setIsActiveNavXs(false);
-    dispatch(closeAuthModal());
-    setIsLoginSuccessOpen(true);
   };
 
   return (
     <div className="fixed flex justify-center items-center inset-0 bg-black/30 z-30 no-scrollbar">
       <div className="relative rounded-2xl max-h-[90vh] overflow-hidden">
         <X
-          onClick={() => dispatch(closeAuthModal())}
+          onClick={() => dispatch(closeAuthForm())}
           className="absolute right-5 top-5 cursor-pointer"
         />
         <div className="max-h-[90vh] overflow-y-auto no-scrollbar ">
@@ -63,11 +81,11 @@ export const AuthForm = ({
             <ul className="flex justify-center gap-4 text-2xl font-bold">
               <li
                 onClick={() => {
-                  setModeActive("login");
+                  dispatch(setMode("login"));
                   setIsAuthMessage(false);
                 }}
                 className={`${
-                  modeActive === "login"
+                  mode === "login"
                     ? "relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-1/2 after:-translate-x-1/2 after:h-1 after:bg-teal-400 after:rounded-full"
                     : ""
                 } p-2 cursor-pointer`}
@@ -76,11 +94,11 @@ export const AuthForm = ({
               </li>
               <li
                 onClick={() => {
-                  setModeActive("signup");
+                  dispatch(setMode("signup"));
                   setIsAuthMessage(false);
                 }}
                 className={`${
-                  modeActive === "signup"
+                  mode === "signup"
                     ? "relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-1/2 after:-translate-x-1/2 after:h-1 after:bg-teal-400 after:rounded-full"
                     : ""
                 } p-2 cursor-pointer`}
@@ -90,7 +108,7 @@ export const AuthForm = ({
             </ul>
             <div
               className={`${
-                modeActive === "signup" ? "block" : "hidden"
+                mode === "signup" ? "block" : "hidden"
               } flex flex-col gap-2`}
             >
               <label htmlFor="username" className="text-xs font-bold">
@@ -136,7 +154,7 @@ export const AuthForm = ({
               type="submit"
               className="text-center text-white font-extrabold p-3 bg-indigo-600 rounded-xl text-sm hover:bg-indigo-500 cursor-pointer"
             >
-              {modeActive === "login" ? "Log in" : "Create an account"}
+              {mode === "login" ? "Log in" : "Create an account"}
             </button>
           </form>
         </div>

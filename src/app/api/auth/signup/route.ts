@@ -1,10 +1,12 @@
 import { AuthError } from "@/lib/auth/auth-error";
 import { CredentialsValidator } from "@/lib/auth/credentials-validator";
 import { prisma } from "@/lib/db/prisma";
-import { toPublicUser } from "@/lib/mappers/to-public-user";
+//import { toPublicUser } from "@/lib/mappers/to-public-user";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { setAuthCookies } from "@/lib/auth/set-auth-cookies";
+//import { setAuthCookies } from "@/lib/auth/set-auth-cookies";
+
+import { createVericaficationToken } from "@/lib/auth/create-verification-token";
 
 export async function POST(req: Request) {
   const { email, username, password } = await req.json();
@@ -31,9 +33,10 @@ export async function POST(req: Request) {
       },
     });
 
-    const publicUser = toPublicUser(newUser);
-
-    await setAuthCookies(publicUser);
+    createVericaficationToken({
+      id: newUser.id,
+      email: newUser.email,
+    });
 
     return NextResponse.json(
       {
