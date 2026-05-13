@@ -4,6 +4,8 @@ A fullstack cryptocurrency tracking application built with Next.js, TypeScript a
 
 The application displays the top 100 cryptocurrencies by market capitalization in real time, including detailed information pages, charts, crypto news, user authentication and personalized watchlists.
 
+Inspired by the design patterns and user experience of CoinMarketCap.
+
 ---
 
 ## Features
