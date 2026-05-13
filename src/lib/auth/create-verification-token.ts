@@ -23,7 +23,7 @@ export const createVericaficationToken = async ({
     data: {
       token: verificationToken,
       userId: id,
-      expiredAt: new Date(Date.now() + 1000),
+      expiredAt: new Date(Date.now() + 1000 + 60 + 60),
     },
   });
 
