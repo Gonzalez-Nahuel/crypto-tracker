@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const sendVerificationEmail = async ({ email, token }: Props) => {
-  const verifyURL = `http://localhost:3000/api/auth/verify-email?token=${token}`;
+  const verifyURL = `${process.env.APP_URL}/api/auth/verify-email?token=${token}`;
 
   await resend.emails.send({
     from: "onboarding@resend.dev",
