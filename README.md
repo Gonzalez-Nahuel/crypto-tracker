@@ -1,49 +1,156 @@
-# Tracker
+# Crypto Tracker
 
-Aplicación web para consultar las **Top 100 criptomonedas**, inspirada en CoinMarketCap. Permite visualizar métricas globales y detalles de cada cripto en tiempo real.
+A fullstack cryptocurrency tracking application built with Next.js, TypeScript and PostgreSQL.
 
-## Tecnologías
+The application displays the top 100 cryptocurrencies by market capitalization in real time, including detailed information pages, charts, crypto news, user authentication and personalized watchlists.
 
-- **Next.js**: Framework de React para renderizado del lado del servidor y rutas dinámicas.
-- **TypeScript**: Tipado estático para mayor seguridad y mantenibilidad.
-- **Tailwind CSS**: Estilos modernos y responsivos con utilidad de clases.
-- **Redux Toolkit**: Manejo de estado global de manera eficiente y escalable.
+---
 
-## Funcionalidades
+## Features
 
-- Mostrar **Top 100 criptomonedas** con sus precios, cambios y capitalización de mercado.
-- Ver métricas globales del mercado cripto.
-- Actualización de datos usando APIs externas (CoinGecko, CryptoCompare).
-- Estado global para caché de datos y gestión de peticiones.
-- Diseño responsivo para desktop y dispositivos móviles.
+- Top 100 cryptocurrencies by market cap
+- Real-time crypto data
+- Detailed crypto pages
+- Interactive price charts
+- Crypto news section
+- Search modal to quickly find cryptocurrencies
+- User signup and login
+- Email account verification
+- JWT authentication
+- HttpOnly and SameSite session cookies
+- Personalized watchlist per user
+- Responsive UI for all screen sizes
+- Dark mode / Light mode
 
-## APIs utilizadas
+---
 
-- [Coingecko](https://www.coingecko.com/api/documentations/v3)
-- [CryptoCompare](https://developers.coindesk.com/)
+## Tech Stack
 
-## Instalación
+### Frontend
 
-1. Clonar el repositorio:
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Redux Toolkit
+
+### Backend
+
+- Next.js API Routes
+- Prisma ORM
+- JWT Authentication
+
+### Database
+
+- PostgreSQL
+- Supabase
+
+### External APIs
+
+- [CoinGecko API](https://docs.coingecko.com)
+- [AlternativeMe](https://alternative.me/crypto/api/)
+- [CryptoCompare API](https://developers.coindesk.com/#introduction)
+- [CryptoNews API](https://cryptonews-api.com/)
+
+### Deployment
+
+- [Vercel](https://vercel.com)
+
+---
+
+## Authentication & Security
+
+- JWT-based authentication
+- HttpOnly cookies
+- SameSite cookie protection
+- Email verification system
+- Verification tokens linked to users
+- Environment variable management
+
+---
+
+## Demo Account
+
+```txt
+Email: demo@tracker-app.com
+Password: Demo1234!
+```
+
+---
+
+## Installation
+
+Clone the repository:
 
 ```bash
-git clone https://github.com/tuusuario/mi-proyecto.git
+git clone https://github.com/Gonzalez-Nahuel/crypto-tracker.git
+
+cd crypto-tracker
 ```
 
-2. Instalar dependencias:
+Install dependencies:
 
-```
+```bash
 npm install
 ```
 
-3. Ejecutar la aplicación en modo desarrollo:
+Setup environment variables:
 
+```env
+DATABASE_URL=
+DIRECT_URL=
+NEWS_API_KEY=
+ACCESS_SECRET=
+REFRESH_SECRET=
+ACCESS_TOKEN_EXPIRES=
+REFRESH_TOKEN_EXPIRES=
+RESEND_API_KEY=
+APP_URL=
 ```
+
+Run prisma migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+Generate prisma client:
+
+```bash
+npx prisma generate
+```
+
+Run the development server:
+
+```bash
 npm run dev
 ```
 
-4. Abrir en el navegador:
+---
 
-```
-http://localhost:3000
-```
+## Future Improvements
+
+- Password reset flow
+- OAuth authentication
+- Advanced chart tools
+- Real-time websocket updates
+- Docker support
+- Kubernetes deployment
+- Unit and integration testing
+
+---
+
+## Screenshots
+
+<p aling="center">
+<img src="./public/readme/Captura desde 2026-05-13 15-55-02.png" width="800"></img>
+<img src="./public/readme/Captura desde 2026-05-13 15-56-51.png" width="800"></img>
+<img src="./public/readme/Captura desde 2026-05-13 16-09-35.png" width="400" height="400"></img>
+<img src="./public/readme/Captura desde 2026-05-13 18-19-48.png" width="800"></img>
+<img src="./public/readme/Captura desde 2026-05-13 15-58-28.png" width="800"></img>
+</p>
+
+---
+
+## Live Demo
+
+[Demo Vercel](https://crypto-tracker-alpha-jet.vercel.app/)
