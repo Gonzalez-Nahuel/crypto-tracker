@@ -4,7 +4,7 @@ import { authRequest } from "@/lib/auth/auth-request";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { closeAuthForm, setMode } from "@/redux/slices/auth-form-slice";
 import { fetchMe } from "@/redux/slices/session-slice";
-import { X } from "lucide-react";
+import { Eye, EyeClosed, X } from "lucide-react";
 import { useState } from "react";
 
 type AuthFormProps = {
@@ -27,6 +27,8 @@ export const AuthForm = ({
   const { mode } = useAppSelector((state) => state.authModal);
   const [isAuthMessage, setIsAuthMessage] = useState(false);
   const [authMessage, setAuthMessage] = useState<string | null>(null);
+  const [showEye, setShowEye] = useState(false);
+  const [password, setPassword] = useState("");
   const dispatch = useAppDispatch();
 
   const handlerAuth = async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -58,6 +60,8 @@ export const AuthForm = ({
       setType("verification");
       setIsAuthModalOpen(true);
       dispatch(setMode("login"));
+      setPassword("");
+      setShowEye(false);
     }
 
     setIsAuthMessage(false);
@@ -139,13 +143,25 @@ export const AuthForm = ({
               <label htmlFor="password" className="text-xs font-bold">
                 Password
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Enter your password..."
-                className="bg-surface p-4 rounded-md border border-thin text-sm focus:outline-blue-400 focus:outline-2"
-              />
+              <div className="flex justify-between bg-surface p-4 rounded-md border border-thin text-sm  focus-within:outline-blue-400 focus-within:outline-2">
+                <input
+                  id="password"
+                  name="password"
+                  value={password}
+                  type={showEye ? "text" : "password"}
+                  placeholder="Enter your password..."
+                  className="bg-transparent text-sm focus:outline-none w-4/5"
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowEye((p) => !p)}
+                  className="cursor-pointer"
+                >
+                  {!showEye ? <EyeClosed size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
               {isAuthMessage && (
                 <span className="text-amber-500">{authMessage}</span>
               )}
