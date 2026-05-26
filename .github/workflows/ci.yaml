@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - feature/docker-aws
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/chekout@v6

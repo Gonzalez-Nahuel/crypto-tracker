@@ -1,7 +1,11 @@
 node_modules
 .next
-.git
+.git*
 .env
 .env.local
 npm-debug.log
 README.md
+Dockerfile
+.dockerignore
+compose.*
+docker-compose.*
