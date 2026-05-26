@@ -9,6 +9,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
+      DIRECT_URL: postgresql://postgres:postgres@localhost:5432/testdb
+      NEWS_API_KEY: test
+      ACCESS_SECRET: test
+      REFRESH_SECRET: test
+      ACCESS_TOKEN_EXPIRES: 15m
+      REFRESH_TOKEN_EXPIRES: 7d
+      RESEND_API_KEY: test
+      APP_URL: http://localhost:3000
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -20,15 +31,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
-          DIRECT_URL: postgresql://postgres:postgres@localhost:5432/testdb
 
       - name: Generate Prisma Client
         run: npx prisma generate
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
-          DIRECT_URL: postgresql://postgres:postgres@localhost:5432/testdb
 
       - name: Build aplication
         run: npm run build
