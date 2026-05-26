@@ -29,9 +29,6 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: testdb
 
-        ports:
-          - 5432:5432
-
         options: >-
           --health-cmd="pg_isready -U postgres"
           --health-interval=5s
@@ -58,6 +55,9 @@ jobs:
 
       - name: Build docker image
         run: docker build -t crypto-tracker .
+
+      - name: Wait for testdb
+        run: sleep 10
 
       - name: Run migrations
         run: npx prisma migrate deploy
