@@ -20,9 +20,13 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
 
       - name: Generate Prisma Client
         run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
 
       - name: Build aplication
         run: npm run build
