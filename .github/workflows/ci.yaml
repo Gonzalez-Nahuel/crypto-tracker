@@ -11,4 +11,21 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/chekout@v6
+        uses: actions/checkout@v6
+
+      - name: Setup Node.jobs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Build aplication
+        run: npm run build
+
+      - name: Build docker image
+        run: docker build -t crypto-tracker .
