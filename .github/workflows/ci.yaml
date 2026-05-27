@@ -50,17 +50,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test
+
       - name: Generate Prisma Client
         run: npx prisma generate
+
+      - name: Run migrations
+        run: npx prisma migrate deploy
 
       - name: Build aplication
         run: npm run build
 
       - name: Build docker image
         run: docker build -t crypto-tracker .
-
-      - name: Wait for testdb
-        run: sleep 10
-
-      - name: Run migrations
-        run: npx prisma migrate deploy
