@@ -6,7 +6,7 @@ on:
       - feature/docker-aws
 
 jobs:
-  build-test:
+  app-test:
     runs-on: ubuntu-latest
     environment: Dev
 
@@ -63,10 +63,10 @@ jobs:
       - name: Run migrations
         run: npx prisma migrate deploy
 
-      - name: Build aplication
+      - name: Build application
         run: npm run build
 
-  container-test:
+  container-integration-test:
     runs-on: ubuntu-latest
     environment: Production
 
