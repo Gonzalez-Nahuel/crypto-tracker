@@ -57,9 +57,6 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
-      - name: run migrate
-        run: docker build -f Dockerfile.prod -t crypto .
-
       - name: Generate Prisma Client
         run: npx prisma generate
 
