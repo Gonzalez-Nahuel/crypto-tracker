@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatNumberAbbreviated } from "../format-number-abbreviated";
+import { formatNumberAbbreviated } from "../../utils/format-number-abbreviated";
 
 describe("formatNumberAbbreviated", () => {
   it("should format thousands correctly", () => {
