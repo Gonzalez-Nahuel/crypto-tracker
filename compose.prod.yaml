@@ -1,6 +1,6 @@
 services:
   migrate:
-    image: crypto-tracker #ghcr.io/${GITHUB_OWNER}/crypto-tracker:${IMAGE_TAG}
+    image: ghcr.io/${GITHUB_OWNER}/crypto-tracker:${IMAGE_TAG}
     container_name: crypto-tracker-migrate
     env_file:
       - .env
@@ -9,7 +9,7 @@ services:
         condition: "service_healthy"
     command: npx prisma migrate deploy
   app:
-    image: crypto-tracker #ghcr.io/${GITHUB_OWNER}/crypto-tracker:${IMAGE_TAG}
+    image: ghcr.io/${GITHUB_OWNER}/crypto-tracker:${IMAGE_TAG}
     container_name: crypto_tracker
     ports:
       - "3000:3000"
