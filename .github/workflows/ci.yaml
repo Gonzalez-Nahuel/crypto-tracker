@@ -113,7 +113,7 @@ jobs:
           --env-file .env.compose \
           -f compose.prod.yaml up -d
 
-      - name: Await localhoste
+      - name: Await localhost
         run: |
           timeout 20 bash -c '
             until curl -f http://localhost:3000; do
@@ -122,7 +122,7 @@ jobs:
           '
 
       - name: Integration test
-        run: docker compose exec -T app npm run test:integration
+        run: docker compose -f compose.prod.yaml exec -T app npm run test:integration
     #  - name: Login GHCR
     #    run: echo "${{secrets.GITHUB_TOKEN}}" | docker login ghcr.io -u ${{github.actor}} --password-stdin
     # - name: Push image
