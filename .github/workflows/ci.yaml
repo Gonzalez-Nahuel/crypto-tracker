@@ -70,17 +70,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
 
-    env:
-      DATABASE_URL: ${{secrets.DATABASE_URL}}
-      DIRECT_URL: ${{secrets.DIRECT_URL}}
-      NEWS_API_KEY: ${{secrets.NEWS_API_KEY}}
-      ACCESS_SECRET: ${{secrets.ACCESS_SECRET}}
-      REFRESH_SECRET: ${{secrets.REFRESH_SECRET}}
-      ACCESS_TOKEN_EXPIRES: ${{secrets.ACCESS_TOKEN_EXPIRES}}
-      REFRESH_TOKEN_EXPIRES: ${{secrets.REFRESH_TOKEN_EXPIRES}}
-      RESEND_API_KEY: ${{secrets.RESEND_API_KEY}}
-      APP_URL: ${{secrets.APP_URL}}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -123,7 +112,9 @@ jobs:
 
       - name: Integration test
         run: docker compose -f compose.prod.yaml exec -T app npm run test:integration
-    #  - name: Login GHCR
-    #    run: echo "${{secrets.GITHUB_TOKEN}}" | docker login ghcr.io -u ${{github.actor}} --password-stdin
-    # - name: Push image
-    #   run: docker push ghcr.io/${{github.repository_owner}}/crypto-tracker:${{github.sha}}*/}
+
+      - name: Login GHCR
+        run: echo "${{secrets.GITHUB_TOKEN}}" | docker login ghcr.io -u ${{github.actor}} --password-stdin
+
+      - name: Push image
+        run: docker push ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:${{github.sha}}
