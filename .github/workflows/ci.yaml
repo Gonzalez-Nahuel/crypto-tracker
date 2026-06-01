@@ -69,6 +69,9 @@ jobs:
   container-integration-test:
     runs-on: ubuntu-latest
     environment: Production
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout repository
