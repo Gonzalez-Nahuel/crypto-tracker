@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       },
     });
 
-    createVericaficationToken({
+    await createVericaficationToken({
       id: newUser.id,
       email: newUser.email,
     });
