@@ -9,7 +9,7 @@ services:
     depends_on:
       - app
   migrate:
-    image: ghcr.io/${GITHUB_OWNER}/crypto-tracker:${IMAGE_TAG}
+    image: ghcr.io/gonzalez-nahuel/crypto-tracker:latest
     container_name: crypto-tracker-migrate
     env_file:
       - .env
@@ -18,7 +18,7 @@ services:
         condition: "service_healthy"
     command: npx prisma migrate deploy
   app:
-    image: ghcr.io/${GITHUB_OWNER}/crypto-tracker:${IMAGE_TAG}
+    image: ghcr.io/gonzalez-nahuel/crypto-tracker:latest
     container_name: crypto_tracker
     env_file:
       - .env
@@ -39,3 +39,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  volumes:
+    postgres_data:
