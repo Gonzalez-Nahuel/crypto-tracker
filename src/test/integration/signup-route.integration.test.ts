@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 
 describe("POST /api/auth/signup", () => {
   it("should create a user", async () => {
-    const res = await fetch("http://localhost:3000/api/auth/signup", {
+    const res = await fetch("http://localhost:80/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({
         username: "test",
@@ -21,7 +21,7 @@ describe("POST /api/auth/signup", () => {
   });
 
   it("should return status 400, missing credentials", async () => {
-    const res = await fetch("http://localhost:3000/api/auth/signup", {
+    const res = await fetch("http://localhost:80/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({
         username: "test",
@@ -39,7 +39,7 @@ describe("POST /api/auth/signup", () => {
   });
 
   it("should return status: 500, ok: false", async () => {
-    const res = await fetch("http://localhost:3000/api/auth/signup", {
+    const res = await fetch("http://localhost:80/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({
         username: "test",
