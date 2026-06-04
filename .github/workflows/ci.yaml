@@ -61,6 +61,7 @@ jobs:
         run: npx prisma migrate deploy
 
   container-integration-test:
+    needs: app-test
     runs-on: ubuntu-latest
     environment: Production
     permissions:
@@ -85,10 +86,10 @@ jobs:
           APP_URL=${{secrets.APP_URL}}
           EOF
 
-      - name: Create env compose file
-        run: |
-          echo "GITHUB_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> .env.compose
-          echo "IMAGE_TAG=${{github.sha}}" >> .env.compose
+      #- name: Create env compose file
+      # run: |
+      #  echo "GITHUB_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> .env.compose
+      # echo "IMAGE_TAG=${{github.sha}}" >> .env.compose
 
       - name: Setup Node.jobs
         uses: actions/setup-node@v4
@@ -104,7 +105,6 @@ jobs:
       - name: Run compose up
         run: |
           docker compose \
-          --env-file .env.compose \
           -f compose.prod.yaml up -d
 
       - name: Await localhost
@@ -128,6 +128,7 @@ jobs:
         run: docker push ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:latest
 
   deploy-aws:
+    needs: container-integration-test
     runs-on: ubuntu-latest
     environment: Production
     permissions:
@@ -177,7 +178,7 @@ jobs:
           username: ${{secrets.EC2_USER}}
           key: ${{secrets.AWS_SSH_KEY}}
           script: |
-            cd ~/deploy && docker compose pull
+            cd ~/deploy && docker compose -f compose.prod.yaml pull
 
       - name: Run compose up
         uses: appleboy/ssh-action@v1
@@ -186,4 +187,4 @@ jobs:
           username: ${{secrets.EC2_USER}}
           key: ${{secrets.AWS_SSH_KEY}}
           script: |
-            cd ~/deploy && docker compose up -d
+            cd ~/deploy && docker compose -f compose.prod.yaml up -d
