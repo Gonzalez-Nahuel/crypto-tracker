@@ -54,6 +54,7 @@
   --color-search-modal-item-border-hover: var(--search-modal-item-border-hover);
   --color-crypto-list-item-bg-hover: var(--crypto-list-item-bg-hover);
   --breakpoint-xs: 396px;
+  --breakpoint-desktop: 460px;
 }
 
 :-webkit-scrollbar {
