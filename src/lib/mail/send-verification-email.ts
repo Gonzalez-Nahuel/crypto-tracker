@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const getResend = () => new Resend(process.env.RESEND_API_KEY);
 
 type Props = {
   email: string;
@@ -8,6 +8,8 @@ type Props = {
 };
 
 export const sendVerificationEmail = async ({ email, token }: Props) => {
+  const resend = getResend();
+
   const verifyURL = `${process.env.APP_URL}/api/auth/verify-email?token=${token}`;
 
   await resend.emails.send({

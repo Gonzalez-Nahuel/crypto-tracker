@@ -118,9 +118,9 @@ export const CryptoTable = () => {
           </button>
         </div>
       )}
-      <table className="border-t border-t-thin font-medium text-sm w-full">
+      <table className="border-t border-t-thin font-medium text-xs sm:text-sm w-full">
         <colgroup>
-          <col />
+          {/*<col />
           <col className="w-12" />
           <col className="w-80" />
           <col className="w-36" />
@@ -130,7 +130,18 @@ export const CryptoTable = () => {
           <col className="max-w-56" />
           <col className="max-w-56" />
           <col className="max-w-44" />
-          <col className="w-auto" />
+          <col className="w-auto" />*/}
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
         </colgroup>
         <thead>
           <tr className="border-b border-b-thin h-12">
@@ -139,7 +150,7 @@ export const CryptoTable = () => {
             <th className="text-start">Name</th>
             <th className="text-end">Price</th>
             <th className="text-end hidden sm:table-cell">1h %</th>
-            <th className="text-end">24h %</th>
+            <th className="text-end hidden xs:table-cell">24h %</th>
             <th className="text-end hidden md:table-cell">7d %</th>
             <th className="text-end hidden lg:table-cell">Market Cap</th>
             <th className="text-end hidden md:table-cell">Volume(24h)</th>

@@ -1,0 +1,49 @@
+services:
+  nginx:
+    restart: unless-stopped
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+  migrate:
+    image: ghcr.io/gonzalez-nahuel/crypto-tracker:latest
+    container_name: crypto-tracker-migrate
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: "service_healthy"
+    command: npx prisma migrate deploy
+  app:
+    restart: unless-stopped
+    image: ghcr.io/gonzalez-nahuel/crypto-tracker:latest
+    container_name: crypto_tracker
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: "service_healthy"
+  db:
+    restart: unless-stopped
+    image: postgres:17
+    container_name: postgresdb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cryptotrackerdb
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

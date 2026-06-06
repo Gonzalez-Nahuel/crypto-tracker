@@ -71,16 +71,16 @@ export const AuthForm = ({
 
   return (
     <div className="fixed flex justify-center items-center inset-0 bg-black/30 z-30 no-scrollbar">
-      <div className="relative rounded-2xl max-h-[90vh] overflow-hidden">
+      <div className="desktop:relative overflow-hidden inset-0 desktop:inset-auto">
         <X
           onClick={() => dispatch(closeAuthForm())}
-          className="absolute right-5 top-5 cursor-pointer"
+          className="absolute right-5 top-5 cursor-pointer z-10"
         />
-        <div className="max-h-[90vh] overflow-y-auto no-scrollbar ">
+        <div className=" overflow-y-auto no-scrollbar  ">
           <form
             onSubmit={handlerAuth}
             action=""
-            className="flex flex-col justify-between w-md  bg-card rounded-2xl h-150 p-6 no-scrollbar"
+            className="flex flex-col justify-between fixed inset-0 desktop:static desktop:inset-auto desktop:w-md  bg-card desktop:rounded-2xl desktop:h-150 p-6 no-scrollbar"
           >
             <ul className="flex justify-center gap-4 text-2xl font-bold">
               <li

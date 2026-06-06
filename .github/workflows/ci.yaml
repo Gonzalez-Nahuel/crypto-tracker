@@ -1,0 +1,185 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - feature/docker-aws
+
+jobs:
+  app-test:
+    runs-on: ubuntu-latest
+    environment: Dev
+
+    env:
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      DIRECT_URL: ${{secrets.DIRECT_URL}}
+      NEWS_API_KEY: ${{secrets.NEWS_API_KEY}}
+      ACCESS_SECRET: ${{secrets.ACCESS_SECRET}}
+      REFRESH_SECRET: ${{secrets.REFRESH_SECRET}}
+      ACCESS_TOKEN_EXPIRES: ${{secrets.ACCESS_TOKEN_EXPIRES}}
+      REFRESH_TOKEN_EXPIRES: ${{secrets.REFRESH_TOKEN_EXPIRES}}
+      RESEND_API_KEY: ${{secrets.RESEND_API_KEY}}
+      APP_URL: ${{secrets.APP_URL}}
+
+    services:
+      postgres:
+        image: postgres:17
+
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+
+        ports:
+          - 5432:5432
+
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.jobs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run migrations
+        run: npx prisma migrate deploy
+
+  container-integration-test:
+    needs: app-test
+    runs-on: ubuntu-latest
+    environment: Production
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Create env file
+        run: |
+          cat <<EOF > .env
+          DATABASE_URL=${{secrets.DATABASE_URL}}
+          DIRECT_URL=${{secrets.DIRECT_URL}}
+          NEWS_API_KEY=${{secrets.NEWS_API_KEY}}
+          ACCESS_SECRET=${{secrets.ACCESS_SECRET}}
+          REFRESH_SECRET=${{secrets.REFRESH_SECRET}}
+          ACCESS_TOKEN_EXPIRES=${{secrets.ACCESS_TOKEN_EXPIRES}}
+          REFRESH_TOKEN_EXPIRES=${{secrets.REFRESH_TOKEN_EXPIRES}}
+          RESEND_API_KEY=${{secrets.RESEND_API_KEY}}
+          APP_URL=${{secrets.APP_URL}}
+          EOF
+
+      - name: Setup Node.jobs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build docker image
+        run: docker build -t ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:${{github.sha}} -t ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:latest .
+
+      - name: Run compose up
+        run: |
+          docker compose \
+          -f compose.prod.yaml up -d
+
+      - name: Await localhost
+        run: |
+          timeout 20 bash -c '
+            until curl -f http://localhost:80; do
+              sleep 2
+            done
+          '
+
+      - name: Integration test
+        run: npm run test:integration
+
+      - name: Login GHCR
+        run: echo "${{secrets.GITHUB_TOKEN}}" | docker login ghcr.io -u ${{github.actor}} --password-stdin
+
+      - name: Push image SHA
+        run: docker push ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:${{github.sha}}
+
+      - name: Push image latest
+        run: docker push ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:latest
+
+  deploy-aws:
+    needs: container-integration-test
+    runs-on: ubuntu-latest
+    environment: Production
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v6
+
+      - name: Create env file
+        run: |
+          cat <<EOF > .env
+          DATABASE_URL=${{secrets.DATABASE_URL}}
+          DIRECT_URL=${{secrets.DIRECT_URL}}
+          NEWS_API_KEY=${{secrets.NEWS_API_KEY}}
+          ACCESS_SECRET=${{secrets.ACCESS_SECRET}}
+          REFRESH_SECRET=${{secrets.REFRESH_SECRET}}
+          ACCESS_TOKEN_EXPIRES=${{secrets.ACCESS_TOKEN_EXPIRES}}
+          REFRESH_TOKEN_EXPIRES=${{secrets.REFRESH_TOKEN_EXPIRES}}
+          RESEND_API_KEY=${{secrets.RESEND_API_KEY}}
+          APP_URL=${{secrets.APP_URL}}
+          EOF
+
+      - name: Create deploy directory on EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{secrets.EC2_IP}}
+          username: ${{secrets.EC2_USER}}
+          key: ${{secrets.AWS_SSH_KEY}}
+          script: |
+            mkdir -p ~/deploy
+
+      - name: Copy comopose,.env and nginx conf files on EC2
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{secrets.EC2_IP}}
+          username: ${{secrets.EC2_USER}}
+          key: ${{secrets.AWS_SSH_KEY}}
+          source: "compose.prod.yaml,.env,nginx"
+          target: "~/deploy"
+
+      - name: Run compose pull
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{secrets.EC2_IP}}
+          username: ${{secrets.EC2_USER}}
+          key: ${{secrets.AWS_SSH_KEY}}
+          script: |
+            cd ~/deploy && docker compose -f compose.prod.yaml pull
+
+      - name: Run compose up
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{secrets.EC2_IP}}
+          username: ${{secrets.EC2_USER}}
+          key: ${{secrets.AWS_SSH_KEY}}
+          script: |
+            cd ~/deploy && docker compose -f compose.prod.yaml up -d
