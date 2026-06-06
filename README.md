@@ -288,4 +288,4 @@ docker compose -f compose.dev.yaml up --build
 
 ## Live Demo
 
-[AWS demo](http://32.195.176.19:80)
+[AWS demo](https://nahueldev.com)
