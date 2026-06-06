@@ -53,6 +53,7 @@
   --color-search-modal-item-bg-hover: var(--search-modal-item-bg-hover);
   --color-search-modal-item-border-hover: var(--search-modal-item-border-hover);
   --color-crypto-list-item-bg-hover: var(--crypto-list-item-bg-hover);
+  --breakpoint-xs: 396px;
 }
 
 :-webkit-scrollbar {

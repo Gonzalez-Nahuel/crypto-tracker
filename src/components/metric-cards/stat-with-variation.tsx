@@ -20,13 +20,13 @@ export const StatWithVariation = ({ value }: StatWithVariationProps) => {
   const [btcMCV, setBtcMCV] = useState(0);
 
   const globalData = useAppSelector(
-    (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.global}`]
+    (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.global}`],
   );
   const btcMCVariation = useAppSelector(
-    (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.top100}`]
+    (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.top100}`],
   );
   const histoday = useAppSelector(
-    (state) => state.cryptoApi[`${CRYPTOCOMPARE_ENDPOINTS.marketCapChart}`]
+    (state) => state.cryptoApi[`${CRYPTOCOMPARE_ENDPOINTS.marketCapChart}`],
   );
 
   const histodayData = histoday?.data?.Data?.Data ?? [];
@@ -42,7 +42,7 @@ export const StatWithVariation = ({ value }: StatWithVariationProps) => {
       setData(globalData.data.data ?? null);
       setError(null);
       setBtcMCV(
-        btcMCVariation?.data?.[0]?.market_cap_change_percentage_24h ?? 0
+        btcMCVariation?.data?.[0]?.market_cap_change_percentage_24h ?? 0,
       );
     }
   }, [globalData, btcMCVariation]);
@@ -69,7 +69,7 @@ export const StatWithVariation = ({ value }: StatWithVariationProps) => {
       ) : (
         <>
           <div className="xl:flex xl:items-center">
-            <div className="text-sm font-semibold mb-0.5 xl:font-bold xl:text-xl xl:mr-0.5">
+            <div className="text-xs sm:text-sm font-semibold mb-0.5 xl:font-bold xl:text-xl xl:mr-0.5">
               {error ? "error" : formatNumberAbbreviated(marketCapUsd)}
             </div>
             <div

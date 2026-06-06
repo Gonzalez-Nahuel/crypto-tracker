@@ -1,5 +1,6 @@
 services:
   nginx:
+    restart: unless-stopped
     image: nginx:alpine
     container_name: nginx
     ports:
@@ -18,6 +19,7 @@ services:
         condition: "service_healthy"
     command: npx prisma migrate deploy
   app:
+    restart: unless-stopped
     image: ghcr.io/gonzalez-nahuel/crypto-tracker:latest
     container_name: crypto_tracker
     env_file:
@@ -26,6 +28,7 @@ services:
       db:
         condition: "service_healthy"
   db:
+    restart: unless-stopped
     image: postgres:17
     container_name: postgresdb
     environment:

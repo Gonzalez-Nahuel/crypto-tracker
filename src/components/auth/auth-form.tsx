@@ -80,7 +80,7 @@ export const AuthForm = ({
           <form
             onSubmit={handlerAuth}
             action=""
-            className="flex flex-col justify-between w-md  bg-card rounded-2xl h-150 p-6 no-scrollbar"
+            className="flex flex-col justify-between w-full max-w-md  bg-card rounded-2xl h-150 p-6 no-scrollbar"
           >
             <ul className="flex justify-center gap-4 text-2xl font-bold">
               <li

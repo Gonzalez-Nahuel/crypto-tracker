@@ -7,7 +7,7 @@ export const BtcDominanceStats = ({
 }: BtcDominanceStatsProps) => {
   return (
     <div>
-      <div className="text-sm xl:text-xl mb-2.5 text-gray-400 ">
+      <div className="text-xs sm:text-sm xl:text-xl mb-2.5 text-gray-400 ">
         <span className="font-extrabold text-foreground xl:text-2xl">
           {btcPercentage}
         </span>

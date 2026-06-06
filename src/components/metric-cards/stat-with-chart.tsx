@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { BtcDominanceStats } from "../shared/btc-dominance-stats";
 import { useAppSelector } from "@/redux/hooks";
 import { COINGECKO_ENDPOINTS, URL_APIS } from "@/constants";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 
 const GaugeChart = dynamic(() => import("react-gauge-chart"), { ssr: false });
 
@@ -16,15 +17,17 @@ export const StatWithCart = ({ value }: StatWithCartProps) => {
   const [data, setData] = useState<FearAndGreed | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [btcMCPercentage, setBtcMCPercentage] = useState<GlobalData | null>(
-    null
+    null,
   );
 
   const MCPercentage = useAppSelector(
-    (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.global}`]
+    (state) => state.cryptoApi[`${COINGECKO_ENDPOINTS.global}`],
   );
   const fearAndGreed = useAppSelector(
-    (state) => state.cryptoApi[`${URL_APIS.alternativeMe}`]
+    (state) => state.cryptoApi[`${URL_APIS.alternativeMe}`],
   );
+
+  const isXs = useMediaQuery("(max-width: 460px)");
 
   useEffect(() => {
     const getData = async () => {
@@ -77,22 +80,24 @@ export const StatWithCart = ({ value }: StatWithCartProps) => {
       </>
     ) : (
       <>
-        <div className=" w-full text-center text-xl relative xl:hidden">
+        <div className=" w-full text-center text-xl relative xl:hidden ">
           <GaugeChart
             id="fear-greed-gauge"
             nrOfLevels={5}
             colors={["#d32f2f", "#f57c00", "#fbc02d", "#388e3c", "#1b5e20"]}
             arcWidth={0.1}
             percent={fearAndGreedValue}
-            formatTextValue={(value) => `${value}`}
+            formatTextValue={(value) => (isXs ? "" : `${value}`)}
             textColor={"var(--foreground)"}
-            fontSize="13px"
+            fontSize="12px"
             style={{
-              width: "90px",
+              width: "100%",
+              height: "100%",
               margin: "auto",
               fontWeight: "bold",
             }}
             needleColor="red"
+            className="max-w-24"
           />
         </div>
         <div className=" w-full relative  text-center text-xl xl:block hidden ">

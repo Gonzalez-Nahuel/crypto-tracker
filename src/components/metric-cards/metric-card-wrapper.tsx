@@ -56,7 +56,7 @@ export const MetricCardWrapper = () => {
 
   return (
     <>
-      <section className="flex justify-between gap-2 w-full md:max-w-4xl xl:max-w-4/6 mx-auto my-8 ">
+      <section className="flex justify-between gap-2 w-full md:max-w-4xl xl:max-w-4/6 mx-auto my-8">
         {metrics.map((value, index) => (
           <MetricCard key={index} value={value} />
         ))}

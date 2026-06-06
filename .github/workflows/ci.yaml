@@ -86,11 +86,6 @@ jobs:
           APP_URL=${{secrets.APP_URL}}
           EOF
 
-      #- name: Create env compose file
-      # run: |
-      #  echo "GITHUB_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> .env.compose
-      # echo "IMAGE_TAG=${{github.sha}}" >> .env.compose
-
       - name: Setup Node.jobs
         uses: actions/setup-node@v4
         with:
@@ -100,7 +95,7 @@ jobs:
         run: npm ci
 
       - name: Build docker image
-        run: docker build -f Dockerfile.prod -t ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:${{github.sha}} -t ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:latest .
+        run: docker build -t ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:${{github.sha}} -t ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/crypto-tracker:latest .
 
       - name: Run compose up
         run: |

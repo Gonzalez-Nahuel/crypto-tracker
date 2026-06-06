@@ -108,7 +108,7 @@ export const CryptoList = ({
           variation={data.price_change_percentage_1h_in_currency}
         />
       </td>
-      <td className="text-end">
+      <td className="text-end hidden xs:table-cell">
         <PriceVariation
           variation={data.price_change_percentage_24h_in_currency}
         />
