@@ -166,7 +166,7 @@ jobs:
           source: "compose.prod.yaml,.env,nginx"
           target: "~/deploy"
 
-      - name: Run compose pull
+      - name: Run compose down and compose pull
         uses: appleboy/ssh-action@v1
         with:
           host: ${{secrets.EC2_IP}}
@@ -174,8 +174,8 @@ jobs:
           key: ${{secrets.AWS_SSH_KEY}}
           script: |
             cd ~/deploy
+            docker compose -f compose.prod.yaml down
             docker compose -f compose.prod.yaml pull
-            docker restart nginx
 
       - name: Run compose up
         uses: appleboy/ssh-action@v1
