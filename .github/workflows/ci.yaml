@@ -173,7 +173,9 @@ jobs:
           username: ${{secrets.EC2_USER}}
           key: ${{secrets.AWS_SSH_KEY}}
           script: |
-            cd ~/deploy && docker compose -f compose.prod.yaml pull
+            cd ~/deploy
+            docker compose -f compose.prod.yaml pull
+            docker restart nginx
 
       - name: Run compose up
         uses: appleboy/ssh-action@v1
@@ -182,4 +184,5 @@ jobs:
           username: ${{secrets.EC2_USER}}
           key: ${{secrets.AWS_SSH_KEY}}
           script: |
-            cd ~/deploy && docker compose -f compose.prod.yaml up -d
+            cd ~/deploy
+            docker compose -f compose.prod.yaml up -d
