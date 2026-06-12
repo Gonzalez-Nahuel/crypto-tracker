@@ -187,3 +187,12 @@ jobs:
           script: |
             cd ~/deploy
             docker compose -f compose.prod.yaml up -d
+
+      - name: Cleanup docker images
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{secrets.EC2_IP}}
+          username: ${{secrets.EC2_USER}}
+          key: ${{secrets.AWS_SSH_KEY}}
+          script: |
+            docker image prune -af
