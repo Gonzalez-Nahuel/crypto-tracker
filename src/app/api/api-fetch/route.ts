@@ -32,13 +32,18 @@ export async function GET(req: Request) {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 30000);
+    const headers: HeadersInit = {
+      Accept: "application/json",
+      "User-Agent": "Mozilla/5.0",
+    };
+
+    if (parsedUrl.hostname === "min-api.cryptocompare.com") {
+      headers.Authorization = `Apikey ${process.env.CRYPTOCOMPARE_API_KEY}`;
+    }
 
     const res = await fetch(parsedUrl, {
       signal: controller.signal,
-      headers: {
-        Accept: "application/json",
-        "User-Agent": "Mozilla/5.0",
-      },
+      headers,
       cache: "no-store",
     });
 
