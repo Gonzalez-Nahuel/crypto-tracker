@@ -85,6 +85,7 @@ jobs:
           REFRESH_TOKEN_EXPIRES=${{secrets.REFRESH_TOKEN_EXPIRES}}
           RESEND_API_KEY=${{secrets.RESEND_API_KEY}}
           APP_URL=${{secrets.APP_URL}}
+          CRYPTOCOMPARE_API_KEY: ${{secrets.CRYPTOCOMPARE_API_KEY}}
           EOF
 
       - name: Setup Node.jobs
@@ -147,6 +148,7 @@ jobs:
           REFRESH_TOKEN_EXPIRES=${{secrets.REFRESH_TOKEN_EXPIRES}}
           RESEND_API_KEY=${{secrets.RESEND_API_KEY}}
           APP_URL=${{secrets.APP_URL}}
+          CRYPTOCOMPARE_API_KEY: ${{secrets.CRYPTOCOMPARE_API_KEY}}
           EOF
 
       - name: Create deploy directory on EC2
